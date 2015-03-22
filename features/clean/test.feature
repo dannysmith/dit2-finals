@@ -3,7 +3,8 @@ Feature: Test the framework works
   I want to test my framework
   So that I I can ensure the framework works priperly
 
-  @test
+  # This is tagged not_started to prevent execution on CI.
+  @test @not_started
   Scenario:
     Given I am testing
 
