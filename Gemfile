@@ -13,7 +13,7 @@ gem 'syntax'
 gem 'headless'
 
 # Interacting with APIs
-gem 'httparty'
+# gem 'httparty'
 # gem 'rubyzip'  # Required by 'behave'
 # gem 'behave'  # Incompatible with Selenium due to selenium-webdriver requiring rubyzip ~> 1.0 and behave requiring rubyzip ~> 0.9.9.
 

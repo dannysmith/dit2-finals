@@ -5,8 +5,6 @@ require 'cucumber'
 require 'cucumber/rake/task'
 require 'rubocop/rake_task'
 require 'rake/clean'
-# require 'zip' # Required by 'behave'
-# require 'behave' # Incompatible with Selenium due to selenium-webdriver requiring rubyzip ~> 1.0 and behave requiring rubyzip ~> 0.9.9.
 
 # rake clean can be used to clear out old reports and screenshots
 CLEAN.include('results/rerun.txt', 'results/report.html', 'results/koinos_report.html', 'results/screenshots/*.*', 'logs/*.*')
