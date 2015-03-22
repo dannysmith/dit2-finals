@@ -1,6 +1,6 @@
 # Moodle Automated UI Tests
 
-Bump
+[ ![Codeship Status for spartaglobal/dit2-finals](https://codeship.com/projects/c6918670-b303-0132-aae5-6a71bba51758/status?branch=master)](https://codeship.com/projects/70124)
 
 NOTE: You can view this README as an HTML document by running `rake generate_docs` and visiting `./docs/index.html`.
 
