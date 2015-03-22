@@ -1,0 +1,22 @@
+# Access to the data in this file is provided through the EnvConfig class - see env_config.rb
+
+defaults: &execution_defaults
+  default_config: ci #This just ensures the ci profile (below) is loaded if no CONFIG= is passed from the command line.
+
+  member_login_path: login/
+
+ci:
+  <<: *execution_defaults
+  base_url: http://unix.spartaglobal.com/moodle/
+  admin_url: http://unix.spartaglobal.com/moodle/admin/
+  admin_username: moodle
+  admin_password: soXy3zX2JTRwZCXw!
+
+# Database is currently not used, these are the details if ever needed
+  # database_url: 88.208.245.234
+  # database_username: moodle
+  # database_password: moodle
+  # database_name: moodle
+
+uat:
+  <<: *execution_defaults

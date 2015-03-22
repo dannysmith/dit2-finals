@@ -1,0 +1,335 @@
+<html><head><title>Moodle Automation Suite Documentation</title><link href="prettify.css" type="text/css" rel="stylesheet" /><script type="text/javascript" src="prettify.js"></script><link href="styles.css" rel="stylesheet"></head><body onload="prettyPrint()"><article class="markdown-body entry-content"><h1>Moodle Automated UI Tests</h1>
+
+<p><a href="https://www.codeship.io/projects/44637"> <img src="https://www.codeship.io/projects/af822680-4348-0132-1673-4ed6388ce112/status" alt="Codeship Status for spartaglobal/sparta-testframework"></a></p>
+
+<p>NOTE: You can view this README as an HTML document by running <code class="prettyprint">rake generate_docs</code> and visiting <code class="prettyprint">./docs/index.html</code>.</p>
+
+<p>This document describes the Moodle acceptance test/UI test framework. The framework has the following three goals, as agreed with the Sparta Test Manager:</p>
+
+<ol>
+<li>Make it as easy as possible to write working tests quickly.</li>
+<li>Reduce the amount of UI automation (clicking etc) as much as possible.</li>
+<li>Provide a framework that allows non-rubyists (or people just starting out) to bug fix or add tests.</li>
+</ol>
+
+<h2>Installation</h2>
+
+<p><strong>Prerequisites</strong>: Ruby 1.9.3 and MySQL-devel. On OSX you could use <a href="http://brew.sh">Homebrew</a> to install these. I&#39;d reccomend <a href="https://github.com/sstephenson/rbenv">Rbenv</a> is you&#39;re on OSX. </p>
+
+<p>On windows you should install Ruby193 (32-bit version) and DevKit.</p>
+
+<p>On OSX/Unix/windows, is should just be a case of checking out the repository and running <code class="prettyprint">bundle install</code>.</p>
+
+<h3>Cucumber Tests</h3>
+
+<p>There&#39;s only one build step, which executes the following commands:</p>
+
+<pre><code class="prettyprint shell"># Set up rbenv in path
+rvm use $(cat .ruby-version) --install
+bundle install
+bundle exec ruby -v
+echo &quot;Running the rake task...&quot;
+CONFIG=ci HEADLESS=true bundle exec rake production
+</code></pre>
+
+<h3>Test Setup</h3>
+
+<p>TO DO</p>
+
+<h2>Strategy</h2>
+
+<p>The features and step_definitions are logically split into two types:</p>
+
+<ul>
+<li><strong>Clean Features</strong> are acceptance criteria. They must always pass and are well-designed using page objects to abstract the workings of the individual pages. The tech lead/reviewer has final on what goes in here. They will review the dirty code, make changes and add them here.</li>
+<li><strong>Dirty Features</strong> are quick and dirty features or scenarios written by QAs or developers to test a specific part of the system. It&#39;s not expected that they always pass, as they may depend on some complex configuration and may not be written using page objects. This is default where the devlopers will make their code. </li>
+</ul>
+
+<p>By separating dirty features, it allows developers and QAs who are not experts at cucumber to use the tool without danger of breaking the acceptance tests running on Codeship. If a dirty test is deemed important enough, it could be refactored and turned into clean acceptance criteria and added by the tech reviewer. If a dirty test fails, it could indicate that the test is broken, or that iRedeem is broken. If it transpires that a dirty test is broken, it can be tagged with @off so that it never runs, or simply deleted.</p>
+
+<p>These dirty tests, while not run with every commit, could be run at the beginning of regression testing to indicate possible bugs for manual testers to investigate.</p>
+
+<h2>Basic constructs</h2>
+
+<h3>Features</h3>
+
+<p>In general, the acceptance tests are high-level.</p>
+
+<pre><code class="prettyprint ruby">When I do some things
+Then something should be checked
+</code></pre>
+
+<h3>Page Objects &amp; the App class</h3>
+
+<p>The app class is where you call and initalise the page ogjects for each test that they are needed. When a new page object is added, you will need to add the &quot;insert_name_page&quot; class to here</p>
+
+<pre><code class="prettyprint">class App
+  def initialize(b)
+    @browser = b
+  end
+
+  def home
+    HomePage.new @browser
+  end
+
+  def dashboard
+    Dashboard.new @browser
+  end
+
+  def example
+    InsertName.new @browser
+  end
+  ...
+end
+</code></pre>
+
+<p>Page Objects are where you write the code required to run the tests. The methods within the page objects contain the logic code to actually carry out the tests</p>
+
+<pre><code class="prettyprint">class Dashboard &lt; GenericPage
+  def site_admin
+    @browser.text.include?(&quot;Site Admin&quot;)
+  end
+
+  def admin_panel
+    @browser.p(:id, &quot;expandable_branch_71_siteadministration&quot;).text
+  end
+  ...
+end
+</code></pre>
+
+<p>Once made and checked to be working fine, then you should be able to call the actions within the step_definitions to execute the code</p>
+
+<h3>Step Definitions</h3>
+
+<p>In general, the actual actions to be taken are described in the step definitions:</p>
+
+<pre><code class="prettyprint ruby">When /^I do some things$/ do
+  @app.home.set_something_up
+  @app.home.do_another_thing
+  @app.courses.do_something_else
+end
+
+Then /^something should be checked$/ do
+  @app.courses.assert_some_things_are_right
+end
+</code></pre>
+
+<p>In general, data that is particular to the page, such as error messages that should be displayed, are kept within the page object. Data that is used accross scenario steps or lines is passed into the page object&#39;s methods.</p>
+
+<p>In general, an object is passed first:</p>
+
+<pre><code class="prettyprint ruby">@app.courses.do_another_thing(Course.first)
+</code></pre>
+
+<p>and, by convention, is referred to by a sensible name in the method. In the case of a course, this is always &#39;course&#39;, unless multiple courses are passed.</p>
+
+<pre><code class="prettyprint ruby">class PageOnePage
+  def do_another_thing(course)
+    @browser.h1(class: &#39;heading&#39;).should == course.data.name
+  end
+end
+</code></pre>
+
+<p>If other parameters are required by the method, they are passed as a hash of parameters. This convention borrows from Rails and helps make it clearer what is being passed in long lists of parameters. For example:</p>
+
+<pre><code class="prettyprint ruby">on(PageOnePage).do_another_thing(Course.last, candidates: 3, mode: &#39;list&#39;)
+</code></pre>
+
+<p>This hash of parameters is <em>always</em> referred to as <code class="prettyprint">params</code> in the method. In the above example we can access the individual items with <code class="prettyprint">params[:mode]</code>  or <code class="prettyprint">params[:candidates]</code>.</p>
+
+<pre><code class="prettyprint ruby">class PageOnePage
+  def do_another_thing(course, params = {})
+    if params[:mode] == &#39;list&#39;
+        @browser.h1(class: &#39;heading&#39;).should == course.data.name
+        @course.text_field(class: &#39;qty&#39;).set(params[:candidates])
+    end
+  end
+end
+</code></pre>
+
+<h3>Fat &amp; Skinny Step Definitions</h3>
+
+<p>Taking a leaf out of Rails&#39; book, step definitions should be kept as &#39;skinny&#39; as possible, delegating work to either models or page objects.</p>
+
+<h2>Project Structure</h2>
+
+<pre><code class="prettyprint text">|- config.yml                           General configuration settings
+|- cucumber.yml                         The cucumber profiles
+|- Gemfile                              
+|- Rakefile                             Rake tasks to execute tests
+|- README.md                            This file
+|- features/
+|       |- clean/                       Clean features describing acceptance criteria
+|       |- dirty/                       Quick and dirty features for testing
+|       |- step_definitions/
+|       |       |- clean-steps/         Step definitions for clean features
+|       `- support
+|               |- data/                Setup and test data as YAML files
+|               |- helpers/             Helper methods and overrides
+|               |- models
+|                       `- category.rb        A class for creating Category objects
+|               |- pages                Properly-structured page objects
+|               |- env.rb               Environment settings
+|               `- hooks.rb             Global hooks and setup code
+|- lib/
+|       `- env_config.rb                A class to expose config.yml and YAML test data.
+|- logs/                                API requests are logged here if the debug flag is on in config.yml
+`- results/                             Contains rerun.txt and/or an HTML report.
+|   `- screenshots/                     Contains screenshots of failed scenarios
+`- spec
+</code></pre>
+
+<h2>Tagging Policy</h2>
+
+<p>This isn&#39;t set in stone, but as a guide, the following tags are recommended:</p>
+
+<p>Currently being used: </p>
+
+<ul>
+<li><strong>@clean</strong> - executed as part of the main test suite on CI Build Server. <code class="prettyprint">rake production</code> currently executes all of these features, but when the test suite is large enough it would make sense to add a <code class="prettyprint">rake regression</code> task to execute all @clean features, and attach this to a manual build on Codeship. This could be run before deploying trunk to a new environment, and <code class="prettyprint">rake production</code> could be set to run only @smoke features.</li>
+<li><strong>@wip</strong> - being worked on, will never execute unless explicitly called with <code class="prettyprint">rake t @wip</code>. It&#39;s safe to commit these to master knowing that they won&#39;t run.</li>
+<li><strong>@MDL-XXX</strong> - Reference to a JIRA story or task. Ideally, all features should have this.</li>
+</ul>
+
+<p>These are available to be used in the future:</p>
+
+<ul>
+<li><strong>@dirty</strong> - executed as part of the &#39;dirty&#39; test suite. It&#39;s expected that some of these might fail.</li>
+<li><strong>@not_started</strong> - yet to be worked on, will never execute.</li>
+<li><strong>@manual</strong> - Flagged as a manual test, will never execute unless explicitly called with <code class="prettyprint">rake t @manual</code>.</li>
+<li><strong>@headless</strong> - A browser will not be opened for these features or scenarios.</li>
+<li><strong>@slow</strong> - The feature is particularly slow and should not be run regularly.</li>
+<li><strong>@smoke</strong> - executed as part of the main test suite on CI Build Server <strong>with every push</strong>. This isn&#39;t currently being used (see @clean, above).</li>
+</ul>
+
+<h2>Lifecycle</h2>
+
+<p>Here&#39;s an example of one lifecycle that a feature might go through:</p>
+
+<h3>1. A BA creates a feature:</h3>
+
+<pre><code class="prettyprint ruby">@dirty @MDL-123 @not_started
+Feature: Some Acceptance Criteria
+    ...
+</code></pre>
+
+<p>It may be that the Behave Pro plugin is used so BAs can create features directly in JIRA.</p>
+
+<h3>2. A Dev in Test decides that this feature should form part of the clean tests</h3>
+
+<p>After tidying up the feature and making use of any generic steps, the DiT might move it to /clean and retag it:</p>
+
+<pre><code class="prettyprint ruby">@clean @MDL-123 @not_started
+Feature: Some Acceptance Criteria
+    ...
+</code></pre>
+
+<h3>3. A DiT starts work on it</h3>
+
+<pre><code class="prettyprint ruby">@clean @MDL-123 @wip
+Feature: Some Acceptance Criteria
+    ...
+</code></pre>
+
+<p>Note: It&#39;s perfectly safe to commit @wip code to trunk, although in an ideal world this would&#39;t happen.</p>
+
+<h3>4. Work on the test is finished</h3>
+
+<pre><code class="prettyprint ruby">@clean @MDL-123
+Feature: Some Acceptance Criteria
+    ...
+</code></pre>
+
+<h3>5. Once of the scenarios is really slow, so we stop it running on every commit to master</h3>
+
+<pre><code class="prettyprint ruby">@clean @MDL-123 @wip
+Feature: Some Acceptance Criteria
+    This is a features
+
+    Scenario: A quick scenario
+        Given ...
+
+    @slow
+    Scenario: A slow scenario
+        Given...
+</code></pre>
+
+<h2>Rake tasks</h2>
+
+<p>There are a number of rake tasks available, and you can always add more. Some to note in particular are:</p>
+
+<ul>
+<li><code class="prettyprint">rake generate_docs</code> converts the REAME.md file into an HTML document.</li>
+<li><code class="prettyprint">rake clean</code> clears out the logs and results directories. <strong>You should run this before comitting</strong> to avoid polluting the CI artifacts with old screenshots and reports.</li>
+<li><code class="prettyprint">rake production</code> used by Codeship ro execute @clean features on CI.</li>
+<li><code class="prettyprint">rake wip</code> runs any features that are tagged @wip. You&#39;ll use this lots when working locally.</li>
+<li><code class="prettyprint">rake t @sometag</code> runs a specific tag, again you&#39;ll probably use this lots when working locally.</li>
+<li><code class="prettyprint">rake help</code> shows some details of the available tasks.</li>
+</ul>
+
+<h2>Using IRB or pry inside the application</h2>
+
+<p>A test feature and scenario exists to allow you to access pry inside the applicaton. Run:</p>
+
+<pre><code class="prettyprint">rake t @test
+</code></pre>
+
+<p>You&#39;ll then end up isnide a pry instance, with the test environment correctly loaded.</p>
+
+<p>Needless to say, you can also start a pry instance by adding <code class="prettyprint">binding.pry</code> anywhere in the code. This will start a pry instance at that point.</p>
+
+<h2>Working on a new feature of the test suite</h2>
+
+<p>First, create a feature branch:</p>
+
+<pre><code class="prettyprint shell">master$&gt; git checkout -b my-feature
+</code></pre>
+
+<p>Then fire up the app and do some work:</p>
+
+<pre><code class="prettyprint shell">my-feature$&gt; subl .
+</code></pre>
+
+<p>Regularly test, commit and push that work to github:</p>
+
+<pre><code class="prettyprint shell">my-feature$&gt; rspec
+my-feature$&gt; git commit -m &quot;Some Stuff&quot;
+my-feature$&gt; git push
+</code></pre>
+
+<p>Then submit a pull request to the master branch (note that you&#39;ll need the hub gem installed for this to work from your terminal):</p>
+
+<pre><code class="prettyprint shell">my-feature$&gt; git pull-request -b master
+</code></pre>
+
+<p>Ask someone to code review, accept the pull request and merge to <code class="prettyprint">master</code>.</p>
+
+<h2>Commit Policy</h2>
+
+<p>In an ideal world:</p>
+
+<ol>
+<li>Anyone can commit features to <code class="prettyprint">/dirty</code>, but they must be tagged with a JIRA number and <code class="prettyprint">@not_started</code>. The idea is that even BAs or developers could commit new feature files.</li>
+<li>Any QAs or Devs can commit to <code class="prettyprint">/dirty_steps</code> and <code class="prettyprint">/dirty_pages</code>, but they must pass locally first.</li>
+<li>Any code committed to <code class="prettyprint">/clean</code>, whether features or ruby, must pass on CI and have been code reviewed by the tech lead or appointed ruby developer.</li>
+</ol>
+
+<h2>Contributors</h2>
+
+<p>Here is a list of everyone that has worked on the testframework</p>
+
+<table><thead>
+<tr>
+<th>Username</th>
+<th>Name</th>
+<th>E-mail</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>dannysmith</td>
+<td>Danny Smith</td>
+<td>dmsith@testingcircle.com</td>
+</tr>
+</tbody></table>
+</article></script></body>
+</html>

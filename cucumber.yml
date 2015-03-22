@@ -1,0 +1,7 @@
+default: -t ~@manual -t ~@wip -t ~@not_started -t ~@failing -t ~@off <%= "-t " + ENV['TAGS'] unless ENV['TAGS'].nil? %>
+wip: --format 'Slowhandcuke::Formatter' -t @wip -t ~@manual <%= "-t " + ENV['TAGS'] unless ENV['TAGS'].nil? %>
+all: -t ~@off <%= "-t " + ENV['TAGS'] unless ENV['TAGS'].nil? %> -t ~@manual
+complete_no_failing:  -t ~@failing -t ~@wip -t ~@not_started -t ~@off <%= "-t " + ENV['TAGS'] unless ENV['TAGS'].nil? %>
+failing: -t @failing -t ~@wip -t ~@not_started -t ~@off <%= "-t " + ENV['TAGS'] unless ENV['TAGS'].nil? %>
+list-tags: -d -f Cucumber::Formatter::ListTags
+clean_features: -t ~@wip -t ~@not_started -t ~@failing -t ~@off <%= "-t " + ENV['TAGS'] unless ENV['TAGS'].nil? %>
