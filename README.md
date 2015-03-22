@@ -1,5 +1,7 @@
 # Moodle Automated UI Tests
 
+Bump
+
 NOTE: You can view this README as an HTML document by running `rake generate_docs` and visiting `./docs/index.html`.
 
 This document describes the Moodle acceptance test/UI test framework. The framework has the following three goals, as agreed with the Sparta Test Manager:
