@@ -50,7 +50,7 @@ end
 desc "Run production tasks"
 Cucumber::Rake::Task.new :production, "Run only tasks tagged with production." do |t|
   t.profile = 'clean_features'
-  t.cucumber_opts = "--format pretty --format html --out results/report.html"
+  t.cucumber_opts = "--format pretty"
 end
 
 # Generates HTML docs from the readme
