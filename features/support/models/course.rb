@@ -25,46 +25,46 @@
 ##################### WARNING #####################
 
 
-require 'betterlorem'
+# require 'betterlorem'
 
-class Course
-  attr_accessor :course_id, :data
+# class Course
+#   attr_accessor :course_id, :data
 
-  @@courses = []
+#   @@courses = []
 
-  def initialize(browser, params = {})
+#   def initialize(browser, params = {})
 
-    @browser = browser
-
-
-
-
-    #---------------------
-    # Create a Course using the API and set whatever instance variables are required to describe it
-    # Put the code to do this here.
-    #---------------------
+#     @browser = browser
 
 
 
 
-    # Add to class variable
-    @@courses << self
+#     #---------------------
+#     # Create a Course using the API and set whatever instance variables are required to describe it
+#     # Put the code to do this here.
+#     #---------------------
 
-    return self
-  end
 
 
-  # Class methods
 
-  def self.all
-    return @@courses
-  end
+#     # Add to class variable
+#     @@courses << self
 
-  def self.last
-    return @@courses.last
-  end
+#     return self
+#   end
 
-  def self.first
-    return @@courses.first
-  end
-end
+
+#   # Class methods
+
+#   def self.all
+#     return @@courses
+#   end
+
+#   def self.last
+#     return @@courses.last
+#   end
+
+#   def self.first
+#     return @@courses.first
+#   end
+# end
