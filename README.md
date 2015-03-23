@@ -293,12 +293,21 @@ First, create a feature branch:
 
 ````shell
 master$> git checkout -b my-feature
+my-feature$> git push
 ````
 
-Then fire up the app and do some work:
+Then fire up the app and do the first bit of work:
 
 ````shell
 my-feature$> subl .
+````
+
+After your first commit, push to github and greate a new pull request (to master) for the feature. (Note that you'll need the hub gem installed for this to work from your terminal.)
+
+````shell
+my-feature$> git commit -m "First bit of work on the feature"
+my-feature$> git push
+my-feature$> git pull-request -b master
 ````
 
 Regularly test, commit and push that work to github:
@@ -309,13 +318,7 @@ my-feature$> git commit -m "Some Stuff"
 my-feature$> git push
 ````
 
-Then submit a pull request to the master branch (note that you'll need the hub gem installed for this to work from your terminal):
-
-````shell
-my-feature$> git pull-request -b master
-````
-
-Ask someone to code review, accept the pull request and merge to `master`.
+When you're done, ask someone to code review, accept the pull request and merge to `master`.
 
 ## Commit Policy
 
