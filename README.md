@@ -293,12 +293,21 @@ First, create a feature branch:
 
 ````shell
 master$> git checkout -b my-feature
+my-feature$> git push
 ````
 
-Then fire up the app and do some work:
+Then fire up the app and do the first bit of work:
 
 ````shell
 my-feature$> subl .
+````
+
+After your first commit, push to github and greate a new pull request (to master) for the feature. (Note that you'll need the hub gem installed for this to work from your terminal.)
+
+````shell
+my-feature$> git commit -m "First bit of work on the feature"
+my-feature$> git push
+my-feature$> git pull-request -b master
 ````
 
 Regularly test, commit and push that work to github:
@@ -309,13 +318,25 @@ my-feature$> git commit -m "Some Stuff"
 my-feature$> git push
 ````
 
-Then submit a pull request to the master branch (note that you'll need the hub gem installed for this to work from your terminal):
+Before pushing to github, it's a good idea to tidy up your commits by interactiveley rebasing. You can change the messages and squash commits together. This will run `rebase -i` back to the beginning of the current branch:
 
 ````shell
-my-feature$> git pull-request -b master
+my-feature$> git rebase -i $(git merge-base $(git branch | sed -n '/\* /s///p') master)
 ````
 
-Ask someone to code review, accept the pull request and merge to `master`.
+When you're done, ask someone to code review, accept the pull request and merge to `master`. The best way to merge is like this:
+
+````shell
+my-feature$> git checkout master
+master$> git pull origin master # Pull down any changes on master
+my-feature$> git checkout my-feature
+my-feature$> git rebase master # Replay any commits from master on my branch
+my-feature$> git checkout master
+master$> git merge --no-ff my-feature # Merge into master, but do not fast-forward.
+master$> git push origin master
+````
+
+This avoids branches crossing over in the history, but maintains the commit history on branches (unlike using a fast-forward merge). [See here](http://blog.differential.com/best-way-to-merge-a-github-pull-request/) for more information on this.
 
 ## Commit Policy
 
