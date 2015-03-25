@@ -318,7 +318,15 @@ my-feature$> git commit -m "Some Stuff"
 my-feature$> git push
 ````
 
-When you're done, ask someone to code review, accept the pull request and merge to `master`.
+Before pushing to github, it's a good idea to tidy up your commits by interactiveley rebasing. You can change the messages and squash commits together. This will run `rebase -i` back to the beginning of the current branch:
+
+````shell
+my-feature$> git rebase -i $(git merge-base $(git branch | sed -n '/\* /s///p') master)
+````
+
+When you're done, ask someone to code review, accept the pull request and merge to `master`. The best way to merge is like this:
+
+
 
 ## Commit Policy
 
