@@ -326,7 +326,17 @@ my-feature$> git rebase -i $(git merge-base $(git branch | sed -n '/\* /s///p') 
 
 When you're done, ask someone to code review, accept the pull request and merge to `master`. The best way to merge is like this:
 
+````shell
+my-feature$> git checkout master
+master$> git pull origin master # Pull down any changes on master
+my-feature$> git checkout my-feature
+my-feature$> git rebase master # Replay any commits from master on my branch
+my-feature$> git checkout master
+master$> git merge --no-ff my-feature # Merge into master, but do not fast-forward.
+master$> git push origin master
+````
 
+This avoids branches crossing over in the history, but maintains the commit history on branches (unlike using a fast-forward merge). [See here](http://blog.differential.com/best-way-to-merge-a-github-pull-request/) for more information on this.
 
 ## Commit Policy
 
