@@ -354,6 +354,3 @@ Here is a list of everyone that has worked on the testframework
 | -------|----------|----------|
 | dannysmith | Danny Smith | dmsith@testingcircle.com |
 
-
-An example change on master branch.
-
