@@ -293,7 +293,7 @@ First, create a feature branch:
 
 ````shell
 master$> git checkout -b my-feature
-my-feature$> git push
+my-feature$> git push --set-upstream origin my-feature
 ````
 
 Then fire up the app and do the first bit of work:
@@ -323,6 +323,8 @@ Before pushing to github, it's a good idea to tidy up your commits by interactiv
 ````shell
 my-feature$> git rebase -i $(git merge-base $(git branch | sed -n '/\* /s///p') master)
 ````
+
+If you've already pushed to the feature branch and need to squash or fixup your commits, remember to force push in order to ovewrite the history on github. Be aware that you might loose some information in the form of comments etc.
 
 When you're done, ask someone to code review, accept the pull request and merge to `master`. The best way to merge is like this:
 
