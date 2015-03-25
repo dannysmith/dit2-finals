@@ -337,6 +337,5 @@ Here is a list of everyone that has worked on the testframework
 | dannysmith | Danny Smith | dmsith@testingcircle.com |
 
 
-This is a test of the JIRA Integration << REMOVE ME LATER
-
+An example change on master branch.
 
