@@ -10,3 +10,8 @@ Feature: Test
     Given foobar
     When I do bar foo
     Then Some stuff should do some things
+
+  Scenario: some more stuff
+    Given baz
+    When I do some tidy things
+    Then Some more stuff should do some things
