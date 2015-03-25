@@ -6,8 +6,8 @@
 
 :users:
   :normal:
-    - :user: user
-      :password: mypass
+    - :user: spartatest
+      :password: Spartatest1!
     - :user: user2
       :password: mypass2
   :admin:
