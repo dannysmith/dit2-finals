@@ -326,15 +326,16 @@ my-feature$> git rebase -i $(git merge-base $(git branch | sed -n '/\* /s///p') 
 
 If you've already pushed to the feature branch and need to squash or fixup your commits, remember to force push in order to ovewrite the history on github. Be aware that you might loose some information in the form of comments etc.
 
-When you're done, ask someone to code review, accept the pull request and merge to `master`. The best way to merge is like this:
+When you're done, ask someone to code review, accept the pull request and merge to `master`. You can either use the Merge button on the pull request, or do it like this:
 
 ````shell
-my-feature$> git checkout master
+$> git checkout master # Switch to the master branch
 master$> git pull origin master # Pull down any changes on master
-my-feature$> git checkout my-feature
-my-feature$> git rebase master # Replay any commits from master on my branch
-my-feature$> git checkout master
-master$> git merge --no-ff my-feature # Merge into master, but do not fast-forward.
+master$> git fetch origin # Fetch down all the other branches
+other-feature$> git checkout -b other-feature origin/other-feature
+other-feature$> git rebase master # Replay any commits from master on my branch
+other-feature$> git checkout master
+master$> git merge --no-ff other-feature # Merge into master, but do not fast-forward.
 master$> git push origin master
 ````
 
