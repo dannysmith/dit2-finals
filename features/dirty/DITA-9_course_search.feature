@@ -7,5 +7,5 @@ Feature: Course Search
     Then I should see a list of results for this course
 
     Examples:
-    | course  |  
-    | Biology |  
+    | course |  
+    | test   |  
