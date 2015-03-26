@@ -9,7 +9,7 @@ Feature: Create Course
 
   Scenario: Not allowing missing data
     Given I am logged in as a teacher
-    When I try to create a new course without filling out all the required information
+    When I create a new course with invalid data, missing out required information
     Then it should not allow me to create the course
     And should inform me of what extra information is needed
 
