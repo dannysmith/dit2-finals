@@ -15,4 +15,9 @@ class App
   def login
     LoginPage.new @browser
   end
+
+  def logout
+    @browser.goto 'http://unix.spartaglobal.com/moodle/login/logout.php'
+    @browser.input(value: 'Continue')
+  end
 end
