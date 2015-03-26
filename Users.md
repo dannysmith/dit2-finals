@@ -13,9 +13,9 @@
 - email: www.fakemailgenerator.com/inbox/gustr.com/student1/
 
 ##### Possible Teacher 1
-user: spartatest1
-password: Spartatest1!
-email: www.fakemailgenerator.com/inbox/gustr.com/spartatest/
+- user: spartatest1
+- password: Spartatest1!
+- email: www.fakemailgenerator.com/inbox/gustr.com/spartatest/
 
 ##### Possible Teacher 2
 - user: spartanini1
