@@ -22,8 +22,16 @@ hub pull-request -b master -m 'DITA-9_Course_Search'
 
 ## Rebasing commits
 ```
-git log --oneline --graph --all --decorate
 git rebase -i [commit hash]
 ```
 
+## Cherry pick a commit
+Grab an action from another branch and apply to current branch using the hash of the commit
+```
+git cherry-pick [commit hash]
+```
 
+## Changing text editor to sublime rather from Vim
+```
+git config --global core.editor "'c:/program files/sublime text 2/sublime_text.exe' -w"
+```
