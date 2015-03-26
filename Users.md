@@ -1,17 +1,18 @@
-#URL
-- http://unix.spartaglobal.com/moodle
-- http://unix.spartaglobal.com/moodle/admin
+# CREDENTIALS
+[Go to Moodle Login Form](http://unix.spartaglobal.com/moodle/admin)
 
-#Credentials
-##Admin
+## Admin
+##### Admin 1
 - user: moodle
 - password: soXy3zX2JTRwZCXw!
 
-##Users
+## Students
+##### Possible Student 1
 - user: student1
 - password: Student1!
 - email: www.fakemailgenerator.com/inbox/gustr.com/student1/
 
+## Teachers
 ##### Possible Teacher 1
 - user: spartatest1
 - password: Spartatest1!
