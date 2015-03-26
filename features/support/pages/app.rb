@@ -11,4 +11,21 @@ class App
   def home
     HomePage.new @browser
   end
+
+  def login
+    LoginPage.new @browser
+  end
+
+  def course_page
+    CoursePage.new @browser
+  end
+
+  def course_search_page
+    CourseSearchPage.new @browser
+  end
+
+  def logout
+    @browser.goto 'http://unix.spartaglobal.com/moodle/login/logout.php'
+    @browser.input(value: 'Continue')
+  end
 end
