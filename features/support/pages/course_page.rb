@@ -5,5 +5,8 @@ class CoursePage < GenericPage
 
   def search=(search_term)
     @browser.text_field(id: "navsearchbox").send_keys search_term
+    @browser.input(value: "Go").click
   end
+
+
 end
