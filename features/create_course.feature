@@ -1,6 +1,6 @@
 Feature: Create Course
   As a teacher I want to be able to create a new course on the website, so that my students can enroll on them.
-
+  
   @course_teardown
   Scenario: Successfully creating the course
     Given I am logged in as a teacher 
