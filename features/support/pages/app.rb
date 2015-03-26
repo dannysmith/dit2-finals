@@ -11,4 +11,8 @@ class App
   def home
     HomePage.new @browser
   end
+
+  def login
+    LoginPage.new @browser
+  end
 end
