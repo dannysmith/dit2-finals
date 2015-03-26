@@ -1,11 +1,7 @@
 Feature: Course Search
 
-  @DITA-9 @wip
-  Scenario Outline: Should allow students to search for courses
+  @DITA-9
+  Scenario: Should allow students to search for courses
     Given I am login as a student
-    When I search for <course>
-    Then I should see a list of result relevent to <course>
-
-    Examples:
-    | course |  
-    | test   |  
+    When I search for "test"
+    Then I should see a list of result relevent to "test"

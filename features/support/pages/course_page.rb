@@ -7,6 +7,4 @@ class CoursePage < GenericPage
     @browser.text_field(id: "navsearchbox").send_keys search_term
     @browser.input(value: "Go").click
   end
-
-
 end

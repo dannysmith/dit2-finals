@@ -1,5 +1,4 @@
 class CourseSearchPage < GenericPage
-
   def visit(search_term)
     @browser.goto "http://unix.spartaglobal.com/moodle/course/search.php?search=#{search_term}"
   end

@@ -1,13 +1,12 @@
 class LoginPage < GenericPage
-
   def visit
     @browser.goto "http://unix.spartaglobal.com/moodle/login/"
   end
 
   def login(username, password)
-    self.username = username
-    self.password = password
-    self.click_login_button
+    username= username
+    password= password
+    click_login_button
   end
 
   def username=(username)
