@@ -20,3 +20,10 @@ The commit message is used as the name of the branch page.
 hub pull-request -b master -m 'DITA-9_Course_Search'
 ```
 
+## Rebasing commits
+```
+git log --oneline --graph --all --decorate
+git rebase -i [commit hash]
+```
+
+
