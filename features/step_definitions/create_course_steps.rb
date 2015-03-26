@@ -4,7 +4,6 @@ Given(/^I am logged in as a teacher$/) do
 end
 
 When(/^I create a new course with valid data$/) do
-<<<<<<< HEAD
   @browser.goto 'http://unix.spartaglobal.com/moodle/course/'
   @button.button(value: 'Request a course').click
   @browser.text_field(id: 'id_fullname').set 'Software Enginering'
@@ -13,9 +12,6 @@ When(/^I create a new course with valid data$/) do
   @browser.text_field(id: 'id_reason').set 'Reason message'
   @browser.button(id: 'id_submitbutton').click
   raise "Possibly missing required information" unless expect(browser.element(id: 'notice').text).to include 'Your course request has been saved successfully'
-=======
-  pending # express the regexp above with the code you wish you had
->>>>>>> created the steps file for creating a course with the template given from cucumber
 end
 
 Then(/^I should be able to see it on my list of courses$/) do
