@@ -1,5 +1,4 @@
 Given(/^I am logged in as a teacher$/) do
-  binding.pry
   pending # express the regexp above with the code you wish you had
 end
 
