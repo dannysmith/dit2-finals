@@ -1,1 +1,3 @@
 "my dummy text file" 
+More dummy text
+added more more text
