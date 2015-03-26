@@ -14,7 +14,7 @@ Then(/^it should be able to be seen by a student$/) do
   pending # express the regexp above with the code you wish you had
 end
 
-When(/^I try to create a new course without filling out all the required information$/) do
+When(/^I create a new course with invalid data, missing out required information$/) do
   pending # express the regexp above with the code you wish you had
 end
 
