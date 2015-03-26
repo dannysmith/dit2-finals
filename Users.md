@@ -1,3 +1,5 @@
+#URL
+http://unix.spartaglobal.com/moodle
 #Users
 ##Admin
 user: moodle
@@ -8,6 +10,6 @@ password: Student1!
 email: www.fakemailgenerator.com/inbox/gustr.com/student1/
 
 (possible teacher?)
-user: spartatest
+user: spartatest1
 password: Spartatest1!
 email: www.fakemailgenerator.com/inbox/gustr.com/spartatest/
