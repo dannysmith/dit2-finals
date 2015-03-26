@@ -1,7 +1,7 @@
 class LoginPage < GenericPage
 
   def visit
-    "unix.spartaglobal.com/moodle/login/"
+    @browser.goto "http://unix.spartaglobal.com/moodle/login/"
   end
 
   def login(username, password)
