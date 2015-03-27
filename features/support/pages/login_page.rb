@@ -4,9 +4,9 @@ class LoginPage < GenericPage
   end
 
   def login(username, password)
-    username= username
-    password= password
-    click_login_button
+    self.username= username
+    self.password= password
+    self.click_login_button
   end
 
   def username=(username)
