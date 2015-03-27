@@ -1,10 +1,11 @@
 Given(/^I am logged in as a teacher$/) do
-  pending # express the regexp above with the code you wish you had
+  @app.login.visit
+  @app.login.login 'spartatest1', 'Spartatest1!'
 end
 
 When(/^I create a new course with valid data$/) do
   @browser.goto 'http://unix.spartaglobal.com/moodle/course/'
-  @button.button(value: 'Request a course').click
+  @browser.button(value: 'Request a course').click
   @browser.text_field(id: 'id_fullname').set 'Software Enginering'
   @browser.text_field(id: 'id_shortname').set 'SftEng'
   @browser.element(id: 'id_summary_editoreditable').send_keys 'This course will take you through the wonders of software engineering'
