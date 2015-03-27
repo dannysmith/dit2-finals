@@ -24,6 +24,10 @@ class App
     CourseSearchPage.new @browser
   end
 
+  def course_request_page
+    CourseRequestPage.new @browser
+  end
+
   def logout
     @browser.goto 'http://unix.spartaglobal.com/moodle/login/logout.php'
     @browser.input(value: 'Continue')
