@@ -1,4 +1,4 @@
-Given(/^I am login as a student$/) do
+Given(/^I am logged in as a student$/) do
   @app.login.visit
   @app.login.login 'student1', 'Student1!'
 end
