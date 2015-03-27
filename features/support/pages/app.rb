@@ -28,8 +28,12 @@ class App
     CourseRequestPage.new @browser
   end
 
+  def course_pending
+    CoursePendingPage.new @browser
+  end
+
   def logout
     @browser.goto 'http://unix.spartaglobal.com/moodle/login/logout.php'
-    @browser.input(value: 'Continue')
+    @browser.input(value: 'Continue').click
   end
 end
