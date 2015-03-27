@@ -13,7 +13,3 @@ Feature: Create Course
     When I create a new course with invalid data, missing out required information
     Then it should not allow me to create the course
     And should inform me of what extra information is needed
-
-  Scenario: Shouldn't allow students to create courses
-    Given I am logged in as a student
-    Then it should not be possible for me to create a new course
