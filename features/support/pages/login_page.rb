@@ -20,4 +20,8 @@ class LoginPage < GenericPage
   def click_login_button
     @browser.form(id: 'login').button.click
   end
+
+  def admin_login
+    self.login 'moodle', 'soXy3zX2JTRwZCXw!'
+  end
 end
