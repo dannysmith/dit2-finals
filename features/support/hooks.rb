@@ -19,9 +19,7 @@ Before do
     $setup_done = true
     # This stuff will only run before the first scenario executed. Use it to set up data etc.
   end
-
 end
-
 
 After ('@course_teardown') do
   @app.login.visit

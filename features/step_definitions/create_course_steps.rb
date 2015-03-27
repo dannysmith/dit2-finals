@@ -10,7 +10,7 @@ When(/^I create a new course with (valid|invalid) data/) do |status|
     raise "Possibly missing required information" unless @browser.element(id: 'notice').text.include?('Your course request has been saved successfully')
   else
     @app.course_request_page.submit
-  end  
+  end
 end
 
 When(/^the course is approved by an administrator$/) do
