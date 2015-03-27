@@ -4,6 +4,7 @@ Feature: Create Course
   Scenario: Successfully creating the course
     Given I am logged in as a teacher 
     When I create a new course with valid data
+    And the course is approved by an administrator
     Then I should be able to see it on my list of courses
     And it should be able to be seen by a student
 
