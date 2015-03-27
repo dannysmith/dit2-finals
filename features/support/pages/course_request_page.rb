@@ -30,4 +30,10 @@ class CourseRequestPage < GenericPage
   def submit
     @browser.button(id: 'id_submitbutton').click
   end
+
+  def expect_errors(full_name_error, short_name_error, reason_error)
+    raise 'Incorrect error displayed for full name' unless @browser.div(id: 'fitem_id_fullname').span(class: 'error').text == full_name_error
+    raise 'Incorrect error displayed for short name' unless @browser.div(id: 'fitem_id_shortname').span(class: 'error').text == short_name_error
+    raise 'Incorrect error displayed for reason' unless  @browser.div(id: 'fitem_id_reason').span(class: 'error').text == reason_error 
+  end
 end
