@@ -1,6 +1,6 @@
 class CoursePendingPage < GenericPage
   def visit
-    @browser.goto "http://unix.spartaglobal.com/moodle/course/pending.php"
+    @browser.goto EnvConfig.course_pending_url
   end
 
   def approve

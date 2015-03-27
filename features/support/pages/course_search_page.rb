@@ -1,6 +1,6 @@
 class CourseSearchPage < GenericPage
   def visit(search_term)
-    @browser.goto "http://unix.spartaglobal.com/moodle/course/search.php?search=#{search_term}"
+    @browser.goto EnvConfig.course_search_url+"?search=#{search_term}"
   end
 
   def check_results(search_term)

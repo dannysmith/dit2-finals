@@ -33,7 +33,7 @@ class App
   end
 
   def logout
-    @browser.goto 'http://unix.spartaglobal.com/moodle/login/logout.php'
+    @browser.goto EnvConfig.logout_url
     @browser.input(value: 'Continue').click
   end
 end

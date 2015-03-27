@@ -1,6 +1,6 @@
 class LoginPage < GenericPage
   def visit
-    @browser.goto EnvConfig.admin_url
+    @browser.goto EnvConfig.login_url
   end
 
   def login(username, password)

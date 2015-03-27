@@ -1,6 +1,6 @@
 class CourseRequestPage < GenericPage
   def visit
-    @browser.goto 'http://unix.spartaglobal.com/moodle/course/request.php'
+    @browser.goto EnvConfig.course_request_url
   end
 
   def fill_form(full_name, short_name, summary, reason)
