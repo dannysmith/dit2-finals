@@ -1,6 +1,6 @@
 class LoginPage < GenericPage
   def visit
-    @browser.goto "http://unix.spartaglobal.com/moodle/login/index.php"
+    @browser.goto EnvConfig.login_url
   end
 
   def login(username, password)
@@ -19,5 +19,9 @@ class LoginPage < GenericPage
 
   def click_login_button
     @browser.form(id: 'login').button.click
+  end
+
+  def admin_login
+    self.login EnvConfig.admin_username, EnvConfig.admin_password
   end
 end
