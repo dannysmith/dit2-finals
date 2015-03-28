@@ -3,7 +3,11 @@ class CourseRequestPage < GenericPage
     @browser.goto EnvConfig.course_request_url
   end
 
-  def fill_form(full_name, short_name, summary, reason)
+  def fill_form(course_details = {})
+    full_name = course_details.fetch(:fullname)
+    short_name = course_details.fetch(:shortname)
+    summary = course_details.fetch(:summary)
+    reason = course_details.fetch(:reason)
     self.full_name= full_name
     self.short_name= short_name
     self.summary= summary
@@ -31,9 +35,9 @@ class CourseRequestPage < GenericPage
     @browser.button(id: 'id_submitbutton').click
   end
 
-  def expect_errors(full_name_error, short_name_error, reason_error)
-    raise 'Incorrect error displayed for full name' unless @browser.div(id: 'fitem_id_fullname').span(class: 'error').text == full_name_error
-    raise 'Incorrect error displayed for short name' unless @browser.div(id: 'fitem_id_shortname').span(class: 'error').text == short_name_error
-    raise 'Incorrect error displayed for reason' unless  @browser.div(id: 'fitem_id_reason').span(class: 'error').text == reason_error 
+  def expect_errors(error_messages)
+    raise 'Incorrect error displayed for full name' unless @browser.div(id: 'fitem_id_fullname').span(class: 'error').text == error_messages.fetch(:fullname)
+    raise 'Incorrect error displayed for short name' unless @browser.div(id: 'fitem_id_shortname').span(class: 'error').text == error_messages.fetch(:shortname)
+    raise 'Incorrect error displayed for reason' unless  @browser.div(id: 'fitem_id_reason').span(class: 'error').text == error_messages.fetch(:reason) 
   end
 end

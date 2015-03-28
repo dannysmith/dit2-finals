@@ -5,9 +5,9 @@ end
 
 When(/^I create a new course with (valid|invalid) data/) do |status|
   @app.course_request_page.visit
-  if status == 'valid'
-    @app.course_request_page.fill_form 'Software Engineering', 'SftEng', 'This course will take you through the wonders of software engineering', 'Reason message'
-    raise "Possibly missing required information" unless @browser.element(id: 'notice').text.include?('Your course request has been saved successfully')
+  if status == 'valid'   
+    @app.course_request_page.fill_form fullname: 'Software Engineering', shortname: 'SftEng', summary: 'This course will take you through the wonders of software engineering', reason: 'Reason message'
+    raise "Required information is missing, or names are already in use" unless @browser.element(id: 'notice').text.include?('Your course request has been saved successfully')
   else
     @app.course_request_page.submit
   end
@@ -34,5 +34,5 @@ Then(/^it should not allow me to create the course$/) do
 end
 
 Then(/^should inform me of what extra information is needed$/) do
-  @app.course_request_page.expect_errors 'Missing full name', 'Missing short name', 'Missing reason'
+  @app.course_request_page.expect_errors fullname: 'Missing full name', shortname:'Missing short name', reason: 'Missing reason'
 end
