@@ -15,19 +15,19 @@ class CourseRequestPage < GenericPage
     self.submit
   end
 
-  def full_name= (full_name)
+  def full_name=(full_name)
     @browser.text_field(id: 'id_fullname').set full_name
   end
 
-  def short_name= (short_name)
+  def short_name=(short_name)
     @browser.text_field(id: 'id_shortname').set short_name
   end
 
-  def summary= (summary)
+  def summary=(summary)
     @browser.element(id: 'id_summary_editoreditable').send_keys summary
   end
 
-  def reason= (reason)
+  def reason=(reason)
     @browser.textarea(id: 'id_reason').set reason
   end
 
