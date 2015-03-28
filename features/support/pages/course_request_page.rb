@@ -28,7 +28,7 @@ class CourseRequestPage < GenericPage
   end
 
   def reason= (reason)
-    @browser.text_field(id: 'id_reason').set reason
+    @browser.textarea(id: 'id_reason').set reason
   end
 
   def submit
