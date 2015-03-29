@@ -1,17 +1,22 @@
 class CourseRequestPage < GenericPage
+
+  ERROR_MESSAGE = {fullname: 'Incorrect error displayed for full name',
+                  shortname: 'Incorrect error displayed for short name',
+                  reason: 'Incorrect error displayed for reason'}
+
+  ELEMENT = {fullname: 'fitem_id_fullname',
+            shortname: 'fitem_id_shortname',
+            reason: 'fitem_id_reason'}
+
   def visit
     @browser.goto EnvConfig.course_request_url
   end
 
   def fill_form(course_details = {})
-    full_name = course_details.fetch(:fullname)
-    short_name = course_details.fetch(:shortname)
-    summary = course_details.fetch(:summary)
-    reason = course_details.fetch(:reason)
-    self.full_name= full_name
-    self.short_name= short_name
-    self.summary= summary
-    self.reason= reason
+    self.full_name= course_details.fetch(:fullname)
+    self.short_name= course_details.fetch(:shortname)
+    self.summary= course_details.fetch(:summary)
+    self.reason= course_details.fetch(:reason)
     self.submit
   end
 
@@ -35,9 +40,14 @@ class CourseRequestPage < GenericPage
     @browser.button(id: 'id_submitbutton').click
   end
 
+  def error_displayed(key)
+    raise "This element does not exist" unless @browser.div(id: ELEMENT[key]).span(class: 'error').exists?
+    @browser.div(id: ELEMENT[key]).span(class: 'error').text
+  end
+
   def expect_errors(error_messages)
-    raise 'Incorrect error displayed for full name' unless @browser.div(id: 'fitem_id_fullname').span(class: 'error').text == error_messages.fetch(:fullname)
-    raise 'Incorrect error displayed for short name' unless @browser.div(id: 'fitem_id_shortname').span(class: 'error').text == error_messages.fetch(:shortname)
-    raise 'Incorrect error displayed for reason' unless  @browser.div(id: 'fitem_id_reason').span(class: 'error').text == error_messages.fetch(:reason) 
+    raise ERROR_MESSAGE[:fullname] unless self.error_displayed(:fullname) == error_messages.fetch(:fullname)
+    raise ERROR_MESSAGE[:shortname] unless self.error_displayed(:shortname) == error_messages.fetch(:shortname)
+    raise ERROR_MESSAGE[:reason] unless self.error_displayed(:reason) == error_messages.fetch(:reason) 
   end
 end
