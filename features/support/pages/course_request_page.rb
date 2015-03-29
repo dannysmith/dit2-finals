@@ -14,10 +14,10 @@ class CourseRequestPage < GenericPage
   end
 
   def fill_form(course_details = {})
-    self.full_name= course_details.fetch(:fullname)
-    self.short_name= course_details.fetch(:shortname)
-    self.summary= course_details.fetch(:summary)
-    self.reason= course_details.fetch(:reason)
+    self.full_name = course_details.fetch(:fullname)
+    self.short_name = course_details.fetch(:shortname)
+    self.summary = course_details.fetch(:summary)
+    self.reason = course_details.fetch(:reason)
     self.submit
   end
 
@@ -49,6 +49,6 @@ class CourseRequestPage < GenericPage
   def expect_errors(error_messages)
     raise ERROR_MESSAGE[:fullname] unless self.error_displayed(:fullname) == error_messages.fetch(:fullname)
     raise ERROR_MESSAGE[:shortname] unless self.error_displayed(:shortname) == error_messages.fetch(:shortname)
-    raise ERROR_MESSAGE[:reason] unless self.error_displayed(:reason) == error_messages.fetch(:reason) 
+    raise ERROR_MESSAGE[:reason] unless self.error_displayed(:reason) == error_messages.fetch(:reason)
   end
 end
