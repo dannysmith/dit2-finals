@@ -1,12 +1,13 @@
 class CourseRequestPage < GenericPage
+  ERROR_MESSAGE = {
+    fullname: 'Incorrect error displayed for full name',
+    shortname: 'Incorrect error displayed for short name',
+    reason: 'Incorrect error displayed for reason'}
 
-  ERROR_MESSAGE = {fullname: 'Incorrect error displayed for full name',
-                  shortname: 'Incorrect error displayed for short name',
-                  reason: 'Incorrect error displayed for reason'}
-
-  ELEMENT = {fullname: 'fitem_id_fullname',
-            shortname: 'fitem_id_shortname',
-            reason: 'fitem_id_reason'}
+  ELEMENT = {
+    fullname: 'fitem_id_fullname',
+    shortname: 'fitem_id_shortname',
+    reason: 'fitem_id_reason'}
 
   def visit
     @browser.goto EnvConfig.course_request_url
