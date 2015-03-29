@@ -6,10 +6,10 @@ class CourseRequestPage < GenericPage
   }
 
   ELEMENT = {
-    fullname: {id: 'fitem_id_fullname'},
-    shortname: {id: 'fitem_id_shortname'},
-    reason: {id: 'fitem_id_reason'},
-    error: {class: 'error'}
+    fullname: { id: 'fitem_id_fullname' },
+    shortname: { id: 'fitem_id_shortname' },
+    reason: { id: 'fitem_id_reason' },
+    error: { class: 'error' }
   }
 
   def visit
