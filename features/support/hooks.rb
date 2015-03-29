@@ -19,7 +19,14 @@ Before do
     $setup_done = true
     # This stuff will only run before the first scenario executed. Use it to set up data etc.
   end
+end
 
+After ('@course_teardown') do
+  @app.login.visit
+  @app.login.admin_login
+  @browser.goto 'http://unix.spartaglobal.com/moodle/course/management.php?categoryid=1'
+  @browser.img(alt: 'Delete').click
+  @browser.input(value: 'Continue').click
 end
 
 After do |scenario|

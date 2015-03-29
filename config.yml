@@ -7,8 +7,16 @@ defaults: &execution_defaults
 
 ci:
   <<: *execution_defaults
+  # URLs
   base_url: http://unix.spartaglobal.com/moodle/
-  admin_url: http://unix.spartaglobal.com/moodle/admin/
+  login_url: http://unix.spartaglobal.com/moodle/login/
+  course_request_url: 'http://unix.spartaglobal.com/moodle/course/request.php'
+  course_page_url: "http://unix.spartaglobal.com/moodle/course/index.php"
+  course_pending_url: "http://unix.spartaglobal.com/moodle/course/pending.php"
+  course_search_url: "http://unix.spartaglobal.com/moodle/course/search.php"
+  logout_url: 'http://unix.spartaglobal.com/moodle/login/logout.php'
+
+  # admin credentials
   admin_username: moodle
   admin_password: soXy3zX2JTRwZCXw!
 
