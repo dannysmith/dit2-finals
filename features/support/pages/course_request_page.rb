@@ -2,12 +2,15 @@ class CourseRequestPage < GenericPage
   ERROR_MESSAGE = {
     fullname: 'Incorrect error displayed for full name',
     shortname: 'Incorrect error displayed for short name',
-    reason: 'Incorrect error displayed for reason' }
+    reason: 'Incorrect error displayed for reason'
+  }
 
   ELEMENT = {
-    fullname: 'fitem_id_fullname',
-    shortname: 'fitem_id_shortname',
-    reason: 'fitem_id_reason' }
+    fullname: {id: 'fitem_id_fullname'},
+    shortname: {id: 'fitem_id_shortname'},
+    reason: {id: 'fitem_id_reason'},
+    error: {class: 'error'}
+  }
 
   def visit
     @browser.goto EnvConfig.course_request_url
@@ -42,13 +45,13 @@ class CourseRequestPage < GenericPage
   end
 
   def error_displayed(key)
-    raise "This element does not exist" unless @browser.div(id: ELEMENT[key]).span(class: 'error').exists?
-    @browser.div(id: ELEMENT[key]).span(class: 'error').text
+    raise "This element does not exist" unless @browser.div(ELEMENT[key]).span(ELEMENT[:error]).exists?
+    @browser.div(ELEMENT[key]).span(ELEMENT[:error]).text
   end
 
   def expect_errors(error_messages)
-    raise ERROR_MESSAGE[:fullname] unless self.error_displayed(:fullname) == error_messages.fetch(:fullname)
-    raise ERROR_MESSAGE[:shortname] unless self.error_displayed(:shortname) == error_messages.fetch(:shortname)
-    raise ERROR_MESSAGE[:reason] unless self.error_displayed(:reason) == error_messages.fetch(:reason)
+    raise ERROR_MESSAGE[:fullname] unless error_displayed(:fullname) == error_messages.fetch(:fullname)
+    raise ERROR_MESSAGE[:shortname] unless error_displayed(:shortname) == error_messages.fetch(:shortname)
+    raise ERROR_MESSAGE[:reason] unless error_displayed(:reason) == error_messages.fetch(:reason)
   end
 end
