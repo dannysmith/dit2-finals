@@ -4,3 +4,4 @@
 *.project
 results/screenshots/*.*
 results/rerun.txt
+Gemfile.lock
