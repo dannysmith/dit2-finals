@@ -1,6 +1,6 @@
 class CourseSearchPage < GenericPage
   ELEMENT = {
-    course_name: {class: "coursename"}
+    course_name: { class: 'coursename' }
   }
 
   def visit(search_term)

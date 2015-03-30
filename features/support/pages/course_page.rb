@@ -1,8 +1,8 @@
 class CoursePage < GenericPage
   ELEMENT = {
-    nav_search: {id: "navsearchbox"},
-    submit: {value: "Go"},
-    request_course: {value: 'Request a course'}
+    nav_search: { id: 'navsearchbox' },
+    submit: { value: 'Go' },
+    request_course: { value: 'Request a course' }
   }
 
   def visit

@@ -10,16 +10,16 @@ class CourseRequestPage < GenericPage
   }
 
   ELEMENT = {
-    fullname: {id: 'fitem_id_fullname'},
-    shortname: {id: 'fitem_id_shortname'},
-    reason: {id: 'fitem_id_reason'},
-    error: {class: 'error'},
-    txt_fullname: {id: 'id_fullname'},
-    txt_shortname: {id: 'id_shortname'},
-    txt_summary: {id: 'id_summary_editoreditable'},
-    txt_reason: {id: 'id_reason'},
-    submit: {id: 'id_submitbutton'},
-    notice: {id: 'notice'}
+    fullname: { id: 'fitem_id_fullname' },
+    shortname: { id: 'fitem_id_shortname' },
+    reason: { id: 'fitem_id_reason' },
+    error: { class: 'error' },
+    txt_fullname: { id: 'id_fullname' },
+    txt_shortname: { id: 'id_shortname' },
+    txt_summary: { id: 'id_summary_editoreditable' },
+    txt_reason: { id: 'id_reason' },
+    submit: { id: 'id_submitbutton' },
+    notice: { id: 'notice' }
   }
 
   def visit

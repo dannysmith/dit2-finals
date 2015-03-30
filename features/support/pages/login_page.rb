@@ -1,10 +1,10 @@
 class LoginPage < GenericPage
   ELEMENT = {
-    username: {name: 'username'},
-    password: {id: 'password'},
-    login: {id: 'login'}
+    username: { name: 'username' },
+    password: { id: 'password' },
+    login: { id: 'login' }
   }
-  
+
   def visit
     @browser.goto EnvConfig.login_url
   end

@@ -1,6 +1,6 @@
 class CoursePendingPage < GenericPage
   ELEMENT = {
-    approve: {value: 'Approve'}
+    approve: { value: 'Approve' }
   }
 
   def visit
