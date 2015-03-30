@@ -32,6 +32,14 @@ class App
     CoursePendingPage.new @browser
   end
 
+  def signup
+    SignUpPage.new @browser
+  end
+
+  def tp_email
+    ThirdPartyEmail.new @browser
+  end
+
   def logout
     @browser.goto EnvConfig.logout_url
     @browser.input(value: 'Continue').click

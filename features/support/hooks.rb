@@ -34,6 +34,33 @@ After ('@course_teardown') do
   end
 end
 
+After ('@new_user_teardown') do
+  @app.login.visit
+  @app.login.admin_login
+  @browser.goto EnvConfig.modify_users_url 
+  EnvConfig.data['Correct'].each_with_index do |_u, i|
+    name = EnvConfig.data['Correct'][i]["firstname"]+" "+EnvConfig.data['Correct'][i]["lastname"]
+    @browser.option(text:name).select
+    @browser.button(id:'id_addsel').click
+  end
+  @browser.option(text:'Delete').select
+  @browser.button(id:'id_doaction').click
+  @browser.button(value:'Yes').click
+  @browser.button(value:'Continue').click
+  @browser.goto EnvConfig.third_party_email_url
+  EnvConfig.data['Correct'].each_with_index do |_u, i|
+    @browser.span(id:"inbox-id").click    
+    @browser.span(id:"inbox-id").text_field.set EnvConfig.data['Correct'][i]["email"][/([^@]+)/]
+    @browser.button(class: "save button small").click
+    sleep(2)
+    while @browser.checkbox(name:"mid[]").exists? do
+      @browser.checkbox(name:"mid[]").set true
+      @browser.button(id:"del_button").click
+      sleep(1)
+    end
+  end  
+end
+
 After do |scenario|
 
   @browser.driver.manage.delete_all_cookies
