@@ -25,8 +25,13 @@ After ('@course_teardown') do
   @app.login.visit
   @app.login.admin_login
   @browser.goto 'http://unix.spartaglobal.com/moodle/course/management.php?categoryid=1'
-  @browser.img(alt: 'Delete').click
-  @browser.input(value: 'Continue').click
+  @browser.as(class: 'coursename').each_with_index do |course, index|
+    if course.text == COURSE_NAME
+      @browser.imgs(alt: 'Delete')[index].click
+      @browser.input(value: 'Continue').click
+      break
+    end
+  end
 end
 
 After do |scenario|

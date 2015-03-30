@@ -1,4 +1,3 @@
-source 'http://gems.github.com'
 source 'http://rubygems.org'
 ruby '1.9.3'
 
