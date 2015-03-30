@@ -10,14 +10,12 @@ ci:
   # URLs
   base_url: http://unix.spartaglobal.com/moodle/
   login_url: http://unix.spartaglobal.com/moodle/login/
-  course_request_url: 'http://unix.spartaglobal.com/moodle/course/request.php'
-  course_page_url: "http://unix.spartaglobal.com/moodle/course/index.php"
-  course_pending_url: "http://unix.spartaglobal.com/moodle/course/pending.php"
-  course_search_url: "http://unix.spartaglobal.com/moodle/course/search.php"
-  logout_url: 'http://unix.spartaglobal.com/moodle/login/logout.php'
-  signup_url: http://unix.spartaglobal.com/moodle/login/signup.php?
-  third_party_email_url: https://www.guerrillamail.com/inbox
-  modify_users_url: http://unix.spartaglobal.com/moodle/admin/user/user_bulk.php
+  course_request_url: http://unix.spartaglobal.com/moodle/course/request.php
+  course_page_url: http://unix.spartaglobal.com/moodle/course/index.php
+  course_pending_url: http://unix.spartaglobal.com/moodle/course/pending.php
+  course_search_url: http://unix.spartaglobal.com/moodle/course/search.php
+  course_manage_url: http://unix.spartaglobal.com/moodle/course/management.php?categoryid=1
+  logout_url: http://unix.spartaglobal.com/moodle/login/logout.php
 
   # admin credentials
   admin_username: moodle
