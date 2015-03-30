@@ -1,0 +1,67 @@
+# new Emails must be unique and that they are not being used
+Correct:
+  - username: tempstudent
+    password: 12345678aB!
+    email: tempstudent@sharklasers.com
+    email2: tempstudent@sharklasers.com
+    firstname: temp
+    lastname: student
+
+# please note any input to firstname and lastname will always be correct 
+
+Incorrect:
+  # All blank fields
+  - username: ""
+    password: ""
+    email: ""
+    email2: ""
+    firstname: ""
+    lastname: ""
+  # All incorrect fields
+  - username: ASFBDG123!
+    password: 1
+    email: uiewybiuefiueui
+    email2: uiewybiuefiueui
+    firstname: 1243
+    lastname: 9879
+  # only username incorrect
+  - username: ASFBDG123!
+    password: 12345678aB!
+    email: tempstudent@sharklasers.com
+    email2: tempstudent@sharklasers.com
+    firstname: temp
+    lastname: student
+  # only password incorrect
+  - username: tempstudent
+    password: 1
+    email: tempstudent@sharklasers.com
+    email2: tempstudent@sharklasers.com
+    firstname: temp
+    lastname: student
+  # only email incorrect
+  - username: tempstudent
+    password: 12345678aB!
+    email: uiewybiuefiueui
+    email2: tempstudent@sharklasers.com
+    firstname: temp
+    lastname: student
+  # only email2 incorrect
+  - username: tempstudent
+    password: 12345678aB!
+    email: tempstudent@sharklasers.com
+    email2: uiewybiuefiueui
+    firstname: temp
+    lastname: student
+
+Error:
+  # error message for username
+  - Missing username
+  - Only lowercase letters allowed
+  - Passwords must be at least 8 characters long
+  - Passwords must have at least 1 lower case letter(s)
+  - Passwords must have at least 1 upper case letter(s)
+  - Passwords must have at least 1 non-alphanumeric character(s)
+  - Invalid email address
+  - Missing email address
+  - Missing given name
+  - Missing surname
