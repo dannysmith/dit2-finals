@@ -6,10 +6,15 @@ class CourseRequestPage < GenericPage
   }
 
   ELEMENT = {
-    fullname: { id: 'fitem_id_fullname' },
-    shortname: { id: 'fitem_id_shortname' },
-    reason: { id: 'fitem_id_reason' },
-    error: { class: 'error' }
+    fullname: {id: 'fitem_id_fullname'},
+    shortname: {id: 'fitem_id_shortname'},
+    reason: {id: 'fitem_id_reason'},
+    error: {class: 'error'},
+    txt_fullname: {id: 'id_fullname'},
+    txt_shortname: {id: 'id_shortname'},
+    txt_summary: {id: 'id_summary_editoreditable'},
+    txt_reason: {id: 'id_reason'},
+    submit: {id: 'id_submitbutton'}
   }
 
   def visit
@@ -25,28 +30,28 @@ class CourseRequestPage < GenericPage
   end
 
   def full_name=(full_name)
-    @browser.text_field(id: 'id_fullname').set full_name
+    @browser.text_field(ELEMENT[:txt_fullname]).set full_name
   end
 
   def short_name=(short_name)
-    @browser.text_field(id: 'id_shortname').set short_name
+    @browser.text_field(ELEMENT[:txt_shortname]).set short_name
   end
 
   def summary=(summary)
-    @browser.element(id: 'id_summary_editoreditable').send_keys summary
+    @browser.element(ELEMENT[:txt_summary]).send_keys summary
   end
 
   def reason=(reason)
-    @browser.textarea(id: 'id_reason').set reason
+    @browser.textarea(ELEMENT[:txt_reason]).set reason
   end
 
   def submit
-    @browser.button(id: 'id_submitbutton').click
+    @browser.button(ELEMENT[:submit]).click
   end
 
-  def error_displayed(key)
-    raise "This element does not exist" unless @browser.div(ELEMENT[key]).span(ELEMENT[:error]).exists?
-    @browser.div(ELEMENT[key]).span(ELEMENT[:error]).text
+  def error_displayed(item)
+    raise "This element does not exist" unless @browser.div(ELEMENT[item]).span(ELEMENT[:error]).exists?
+    @browser.div(ELEMENT[item]).span(ELEMENT[:error]).text
   end
 
   def expect_errors(error_messages)

@@ -1,4 +1,10 @@
 class LoginPage < GenericPage
+  ELEMENT = {
+    username: {name: 'username'},
+    password: {id: 'password'},
+    login: {id: 'login'}
+  }
+  
   def visit
     @browser.goto EnvConfig.login_url
   end
@@ -10,15 +16,15 @@ class LoginPage < GenericPage
   end
 
   def username=(username)
-    @browser.text_field(name: 'username').set username
+    @browser.text_field(ELEMENT[:username]).set username
   end
 
   def password=(password)
-    @browser.text_field(id: 'password').set password
+    @browser.text_field(ELEMENT[:password]).set password
   end
 
   def click_login_button
-    @browser.form(id: 'login').button.click
+    @browser.form(ELEMENT[:login]).button.click
   end
 
   def admin_login
