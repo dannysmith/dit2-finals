@@ -32,7 +32,6 @@ class CourseRequestPage < GenericPage
     self.summary = course_details.fetch(:summary)
     self.reason = course_details.fetch(:reason)
     self.submit
-    binding.pry
   end
 
   def full_name=(full_name)
