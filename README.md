@@ -31,7 +31,8 @@ CONFIG=ci HEADLESS=true bundle exec rake production
 ````
 
 ### Test Setup
-TO DO
+#### Student Registration Feature
+The registration.yml file is used to insert all incorrect and correct data into the form and any extra data added to the file will execute an extra test on the new data. The registration.yml file also has an error section to check if the appropriate error messages are displayed to the user.
 
 ## Strategy
 
@@ -205,6 +206,11 @@ These are available to be used in the future:
 - **@slow** - The feature is particularly slow and should not be run regularly.
 - **@smoke** - executed as part of the main test suite on CI Build Server **with every push**. This isn't currently being used (see @clean, above).
 
+
+Custom tags implemented:
+
+- **@course_teardown** - Deletes all courses that were set up for these features or scenarios
+- **@new_user_teardown** - Deletes all users that were set up for these features or scenarios
 
 ## Lifecycle
 
