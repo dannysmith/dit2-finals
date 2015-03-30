@@ -38,7 +38,7 @@ After ('@new_user_teardown') do
   @app.login.visit
   @app.login.admin_login
   @browser.goto EnvConfig.modify_users_url 
-  EnvConfig.data['Correct'].each_with_index do |u,i|    
+  EnvConfig.data['Correct'].each_with_index do |_u, i|
     name = EnvConfig.data['Correct'][i]["firstname"]+" "+EnvConfig.data['Correct'][i]["lastname"]
     @browser.option(text:name).select
     @browser.button(id:'id_addsel').click
@@ -48,7 +48,7 @@ After ('@new_user_teardown') do
   @browser.button(value:'Yes').click
   @browser.button(value:'Continue').click
   @browser.goto EnvConfig.third_party_email_url
-  EnvConfig.data['Correct'].each_with_index do |u,i| 
+  EnvConfig.data['Correct'].each_with_index do |_u, i|
     @browser.span(id:"inbox-id").click    
     @browser.span(id:"inbox-id").text_field.set EnvConfig.data['Correct'][i]["email"][/([^@]+)/]
     @browser.button(class: "save button small").click
