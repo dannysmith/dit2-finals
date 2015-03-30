@@ -5,6 +5,10 @@ class CourseRequestPage < GenericPage
     reason: 'Incorrect error displayed for reason'
   }
 
+  SUCCESS_MESSAGE = {
+    course_request: 'Your course request has been saved successfully'
+  }
+
   ELEMENT = {
     fullname: {id: 'fitem_id_fullname'},
     shortname: {id: 'fitem_id_shortname'},
@@ -14,7 +18,8 @@ class CourseRequestPage < GenericPage
     txt_shortname: {id: 'id_shortname'},
     txt_summary: {id: 'id_summary_editoreditable'},
     txt_reason: {id: 'id_reason'},
-    submit: {id: 'id_submitbutton'}
+    submit: {id: 'id_submitbutton'},
+    notice: {id: 'notice'}
   }
 
   def visit
@@ -27,6 +32,7 @@ class CourseRequestPage < GenericPage
     self.summary = course_details.fetch(:summary)
     self.reason = course_details.fetch(:reason)
     self.submit
+    binding.pry
   end
 
   def full_name=(full_name)
@@ -58,5 +64,9 @@ class CourseRequestPage < GenericPage
     raise ERROR_MESSAGE[:fullname] unless error_displayed(:fullname) == error_messages.fetch(:fullname)
     raise ERROR_MESSAGE[:shortname] unless error_displayed(:shortname) == error_messages.fetch(:shortname)
     raise ERROR_MESSAGE[:reason] unless error_displayed(:reason) == error_messages.fetch(:reason)
+  end
+
+  def success_notice
+    @browser.element(ELEMENT[:notice]).text.include?(SUCCESS_MESSAGE[:course_request])
   end
 end
