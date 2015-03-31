@@ -37,6 +37,30 @@ class SignUpPage < GenericPage
     @browser.button(ELEMENT[:submit])
   end
 
+  def username
+    @browser.text_field(ELEMENT[:username])
+  end
+
+  def password
+    @browser.text_field(ELEMENT[:password])
+  end
+
+  def email
+    @browser.text_field(ELEMENT[:email])
+  end
+
+  def email2
+    @browser.text_field(ELEMENT[:email2])
+  end
+
+  def firstname
+    @browser.text_field(ELEMENT[:firstname])
+  end
+
+  def lastname
+    @browser.text_field(ELEMENT[:lastname])
+  end
+
   def fill_correct(n)    
     @browser.text_field(ELEMENT[:username]).value= DATA[:correct_users][n]['username']
     @browser.text_field(ELEMENT[:password]).value= DATA[:correct_users][n]['password']
