@@ -37,6 +37,65 @@ Before('@user_setup') do
   end
 end
 
+Before ('@DITA6_setup') do
+  @app.login.visit
+  @app.login.admin_login
+  @browser.goto 'http://unix.spartaglobal.com/moodle/user/editadvanced.php?id=-1'
+  @browser.text_field(id: 'id_username').set 'bob'
+  @browser.text_field(id: 'id_newpassword').set '12345678aB!'
+  @browser.text_field(id: 'id_email').set 'bobharris@sharklasers.com'
+  @browser.text_field(id: 'id_firstname').set 'Bob'
+  @browser.text_field(id: 'id_lastname').set 'Harris'
+  @browser.button(id: 'id_submitbutton').click
+
+  @browser.goto 'http://unix.spartaglobal.com/moodle/user/editadvanced.php?id=-1'
+  @browser.text_field(id: 'id_username').set 'tim'
+  @browser.text_field(id: 'id_newpassword').set '12345678aB!'
+  @browser.text_field(id: 'id_email').set 'timjohnson@sharklasers.com'
+  @browser.text_field(id: 'id_firstname').set 'Tim'
+  @browser.text_field(id: 'id_lastname').set 'Johnson'
+  @browser.button(id: 'id_submitbutton').click
+  binding.pry
+  @browser.a(title:'Admin User').click
+  @browser.a(title:'Log out').click
+  @app.login.visit
+
+  @app.login.login 'tim', '12345678aB!'
+  @app.course_request_page.visit 
+  @app.course_request_page.fill_form fullname: 'Physics', shortname: 'Phy', summary: 'This course will take you through the wonders of physics', reason: 'Reason physics message'
+  @browser.a(title:'Tim Johnson').click
+  @browser.a(title:'Log out').click
+  @app.login.visit
+  @app.login.admin_login
+
+  @browser.goto 'http://unix.spartaglobal.com/moodle/course/pending.php'
+  @browser.button(value: 'Approve').click
+  @browser.a(title:'Admin User').click
+  @browser.a(title:'Log out').click
+end
+
+After ('@DITA6_teardown') do
+  @app.login.visit
+  @app.login.admin_login
+  @browser.goto EnvConfig.modify_users_url 
+  @browser.option(text:'Tim Johnson').select
+  @browser.button(id:'id_addsel').click
+  @browser.option(text:'Bob Harris').select
+  @browser.button(id:'id_addsel').click
+  @browser.option(text:'Delete').select
+  @browser.button(id:'id_doaction').click
+  @browser.button(value:'Yes').click
+  @browser.button(value:'Continue').click 
+  @browser.goto EnvConfig.course_manage_url
+  @browser.as(class: 'coursename').each_with_index do |course, i|
+    if course.text == COURSE_NAME
+      @browser.imgs(alt: 'Delete')[i].click
+      @browser.input(value: 'Continue').click
+      break
+    end
+  end
+end
+
 After ('@course_teardown') do
   @app.login.visit
   @app.login.admin_login
