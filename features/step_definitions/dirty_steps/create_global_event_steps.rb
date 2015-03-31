@@ -12,7 +12,11 @@ When(/^I set the type of event to (.+)$/) do |type|
 end
 
 When(/^I fill in the event details (correctly|incorrectly)$/) do |status|
-  @app.new_event.fill_form status
+  if status == 'correctly'
+    @app.new_event.fill_form event_name: 'Global Event', description: 'This is a global event'
+  elsif status == 'incorrectly'
+    @app.new_event.submit
+  end
 end
 
 Then(/^I should see the global event on the Calendar page$/) do
