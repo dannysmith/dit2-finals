@@ -7,9 +7,9 @@ class NewEventPage < GenericPage
     @browser.select_list.select type
   end
 
-  def fill_form(correct_details = {})
-    self.event_name = correct_details.fetch(:event_name)
-    self.description = correct_details.fetch(:description)
+  def fill_form(event_name, description)
+    self.event_name = event_name
+    self.description = description
     self.submit
   end
 
@@ -23,5 +23,9 @@ class NewEventPage < GenericPage
 
   def submit()
     @browser.input(id: 'id_submitbutton').click
+  end
+
+  def check_error
+    @browser.span(text: "Required").visible?
   end
 end
