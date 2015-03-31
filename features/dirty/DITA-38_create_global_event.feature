@@ -2,6 +2,7 @@
 Feature: Create Global Event
   As an Event Co-ordinator, I want to create global events so that my students can sign up to attend them.
 
+  @event_teardown
   Scenario: Successfully creating the global event
     Given I am logged in as admin
     When I am on the new event page
