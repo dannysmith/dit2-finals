@@ -5,7 +5,7 @@ class CalendarDayPage < GenericPage
   end
 
   def check_description=(description)
-    @browser.p(text: description).visible?
+    @browser.td(text: description).visible?
   end
 
   def check_event_name=(event_name)
