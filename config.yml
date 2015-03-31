@@ -19,6 +19,8 @@ ci:
   signup_url: http://unix.spartaglobal.com/moodle/login/signup.php?
   third_party_email_url: https://www.guerrillamail.com/inbox
   modify_users_url: http://unix.spartaglobal.com/moodle/admin/user/user_bulk.php
+  new_event_url: http://unix.spartaglobal.com/moodle/calendar/event.php?action=new
+  calendar_url: http://unix.spartaglobal.com/moodle/calendar/view.php?view=month
 
   # admin credentials
   admin_username: moodle
