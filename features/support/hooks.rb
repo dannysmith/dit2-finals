@@ -38,38 +38,50 @@ Before('@user_setup') do
 end
 
 Before ('@DITA6_setup') do
-  @app.login.visit
-  @app.login.admin_login
-  @browser.goto 'http://unix.spartaglobal.com/moodle/user/editadvanced.php?id=-1'
-  @browser.text_field(id: 'id_username').set 'bob'
-  @browser.text_field(id: 'id_newpassword').set '12345678aB!'
-  @browser.text_field(id: 'id_email').set 'bobharris@sharklasers.com'
-  @browser.text_field(id: 'id_firstname').set 'Bob'
-  @browser.text_field(id: 'id_lastname').set 'Harris'
-  @browser.button(id: 'id_submitbutton').click
+  #@app.login.visit
+  #@app.login.admin_login
+  @app.signup.visit
+  @app.signup.username.set 'bob'
+  @app.signup.password.set '12345678aB!'
+  @app.signup.email.set 'bobharris@sharklasers.com'
+  @app.signup.email2.set 'bobharris@sharklasers.com'
+  @app.signup.firstname.set 'Bob'
+  @app.signup.lastname.set 'Harris'
+  @app.signup.submit.click
 
-  @browser.goto 'http://unix.spartaglobal.com/moodle/user/editadvanced.php?id=-1'
-  @browser.text_field(id: 'id_username').set 'tim'
-  @browser.text_field(id: 'id_newpassword').set '12345678aB!'
-  @browser.text_field(id: 'id_email').set 'timjohnson@sharklasers.com'
-  @browser.text_field(id: 'id_firstname').set 'Tim'
-  @browser.text_field(id: 'id_lastname').set 'Johnson'
-  @browser.button(id: 'id_submitbutton').click
-  binding.pry
-  @browser.a(title:'Admin User').click
-  @browser.a(title:'Log out').click
-  @app.login.visit
+  @app.signup.visit
+  @app.signup.username.set 'kate'
+  @app.signup.password.set '12345678aB!'
+  @app.signup.email.set 'katejohnson@sharklasers.com'
+  @app.signup.email2.set 'katejohnson@sharklasers.com'
+  @app.signup.firstname.set 'Kate'
+  @app.signup.lastname.set'Johnson'
+  @app.signup.submit.click
 
-  @app.login.login 'tim', '12345678aB!'
+  @app.tp_email.visit
+  @app.tp_email.account 'bobharris'
+  sleep(5)
+  @app.tp_email.first_li.click
+  @browser.goto @app.tp_email.email_body.text[/http.+bob/]
+  @app.tp_email.visit
+  @app.tp_email.account 'katejohnson'
+  sleep(5)
+  @app.tp_email.first_li.click
+  @browser.goto @app.tp_email.email_body.text[/http.+kate/]
+  # @browser.a(title:'Admin User').click
+  # @browser.a(title:'Log out').click
+  # @app.login.visit
+  # sleep(2)
+  # @app.login.login 'kate', '12345678aB!'
   @app.course_request_page.visit 
-  @app.course_request_page.fill_form fullname: 'Physics', shortname: 'Phy', summary: 'This course will take you through the wonders of physics', reason: 'Reason physics message'
-  @browser.a(title:'Tim Johnson').click
+  @app.course_request_page.fill_form fullname: 'Maths', shortname: 'Mthy', summary: 'This course will take you through the wonders of Maths', reason: 'Reason Maths message'
+  @browser.a(title:'Kate Johnson').click
   @browser.a(title:'Log out').click
+  
   @app.login.visit
   @app.login.admin_login
-
   @browser.goto 'http://unix.spartaglobal.com/moodle/course/pending.php'
-  @browser.button(value: 'Approve').click
+  @browser.tr(class: 'lastrow').button(value: 'Approve').click
   @browser.a(title:'Admin User').click
   @browser.a(title:'Log out').click
 end
@@ -78,7 +90,7 @@ After ('@DITA6_teardown') do
   @app.login.visit
   @app.login.admin_login
   @browser.goto EnvConfig.modify_users_url 
-  @browser.option(text:'Tim Johnson').select
+  @browser.option(text:'Kate Johnson').select
   @browser.button(id:'id_addsel').click
   @browser.option(text:'Bob Harris').select
   @browser.button(id:'id_addsel').click
@@ -88,7 +100,7 @@ After ('@DITA6_teardown') do
   @browser.button(value:'Continue').click 
   @browser.goto EnvConfig.course_manage_url
   @browser.as(class: 'coursename').each_with_index do |course, i|
-    if course.text == COURSE_NAME
+    if course.text == 'Maths'
       @browser.imgs(alt: 'Delete')[i].click
       @browser.input(value: 'Continue').click
       break
