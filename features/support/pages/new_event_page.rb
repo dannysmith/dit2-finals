@@ -3,7 +3,7 @@ class NewEventPage < GenericPage
     @browser.goto EnvConfig.new_event_url
   end
 
-  def event_type(type)
+  def event_type=(type)
     @browser.select_list.select type
   end
 
@@ -14,11 +14,11 @@ class NewEventPage < GenericPage
   end
 
   def event_name=(name)
-    @browser.input(id: 'name').set name
+    @browser.input(id: 'id_name').send_keys name
   end
 
   def description=(description)
-    @browser.div(id: 'id_descriptioneditable').set description
+    @browser.div(id: 'id_descriptioneditable').send_keys description
   end
 
   def submit()
