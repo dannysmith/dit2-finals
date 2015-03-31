@@ -1,4 +1,3 @@
-@wip
 Feature: Create Global Event
   As an Event Co-ordinator, I want to create global events so that my students can sign up to attend them.
 
@@ -16,5 +15,3 @@ Feature: Create Global Event
     And I set the type of event to Site
     And I fill in the event details incorrectly
     Then I should be prompted with an error message
-
-
