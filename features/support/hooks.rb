@@ -49,6 +49,21 @@ After ('@event_teardown') do
   end
 end
 
+After ('@event_teardown') do
+  @app.login.visit
+  @app.login.admin_login
+  @app.calendar.visit
+  @app.calendar.find_event EVENT_DETAILS[:event_name]
+  @browser.div(class: 'name').wait_until_present
+  @browser.divs(class: 'name').each_with_index do |event, i|
+    if event.text == EVENT_DETAILS[:event_name]
+      @browser.imgs(alt: 'Delete event')[i].click
+      @browser.input(value: 'Delete').click
+      break
+    end
+  end
+end
+
 After ('@new_user_teardown') do
   @app.login.visit
   @app.login.admin_login
