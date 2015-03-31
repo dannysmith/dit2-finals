@@ -10,7 +10,6 @@ end
 
 When(/^I am on the new event page$/) do
   @app.new_event.visit
-  binding.pry
 end
 
 When(/^I set the type of event to (.+)$/) do |type|
