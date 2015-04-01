@@ -3,12 +3,38 @@ EVENT_DETAILS = {
   description: 'This is a test event'
 }
 
+USER_DETAILS = {
+  user1: {
+    username: 'njewootah',
+    password: 'Jewootah1!',
+    email: 'nini@sharklasers.com',
+    firstname: 'Nini',
+    lastname: 'Jewootah'
+  },
+  user2: {
+    username: 'richard',
+    password: 'Twenaaa1!',
+    email: 'rtwena@sharklasers.com',
+    firstname: 'Richard',
+    lastname: 'Twena'
+  }
+}
+
+COURSE_DETAILS = {
+  course1: {
+    fullname: "Computer Science",
+    shortname: "CScience",
+    summary: "Engineer course",
+    reason: "nerds"
+  }
+}
+
 Given(/^I am logged in as (admin|user)$/) do |account|
   @app.login.visit
   if account == 'admin'
     @app.login.admin_login
   elsif account == 'user'
-    @app.login.user_login
+    @app.login.login USER_DETAILS[:user1][:username], USER_DETAILS[:user1][:password]
   end
 end
 
@@ -36,4 +62,12 @@ end
 
 Then(/^I should be prompted with an error message$/) do
   @app.new_event.check_error
+end
+
+Given(/^a student is enrolled on my course$/) do
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
+Given(/^a group exists$/) do
+  pending # Write code here that turns the phrase above into concrete actions
 end
