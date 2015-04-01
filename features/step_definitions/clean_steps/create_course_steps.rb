@@ -2,7 +2,7 @@ COURSE_NAME = 'Software Engineering'
 
 Given(/^I am logged in as a teacher$/) do
   @app.login.visit
-  @app.login.login 'spartatest1', 'Spartatest1!'
+  @app.login.user_login
 end
 
 When(/^I create a new course with (valid|invalid) data/) do |status|

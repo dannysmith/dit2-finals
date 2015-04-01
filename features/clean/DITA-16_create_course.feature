@@ -1,4 +1,4 @@
-@DITA-16
+@DITA-16 @user_setup
 Feature: Create Course
   As a teacher I want to be able to create a new course on the website, so that my students can enroll on them.
 
