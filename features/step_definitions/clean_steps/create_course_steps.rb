@@ -1,4 +1,4 @@
-COURSE_NAME = 'Software Engineering'
+COURSE_NAME = 'English Literature'
 
 Given(/^I am logged in as a teacher$/) do
   @app.login.visit
@@ -8,7 +8,7 @@ end
 When(/^I create a new course with (valid|invalid) data/) do |status|
   @app.course_request_page.visit
   if status == 'valid'   
-    @app.course_request_page.fill_form fullname: COURSE_NAME, shortname: 'SftEng', summary: 'This course will take you through the wonders of software engineering', reason: 'Reason message'
+    @app.course_request_page.fill_form fullname: COURSE_NAME, shortname: 'Eng', summary: 'This course will take you through the wonders of Englist Lit', reason: 'Reason message'
     raise "Required information is missing, or names are already in use" unless @browser.element(id: 'notice').text.include?('Your course request has been saved successfully')
   else
     @app.course_request_page.submit
