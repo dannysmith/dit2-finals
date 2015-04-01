@@ -40,48 +40,67 @@ end
 Before ('@DITA6_setup') do
   #@app.login.visit
   #@app.login.admin_login
-  @app.signup.visit
-  @app.signup.username.set 'bob'
-  @app.signup.password.set '12345678aB!'
-  @app.signup.email.set 'bobharris@sharklasers.com'
-  @app.signup.email2.set 'bobharris@sharklasers.com'
-  @app.signup.firstname.set 'Bob'
-  @app.signup.lastname.set 'Harris'
-  @app.signup.submit.click
 
   @app.signup.visit
-  @app.signup.username.set 'kate'
-  @app.signup.password.set '12345678aB!'
-  @app.signup.email.set 'katejohnson@sharklasers.com'
-  @app.signup.email2.set 'katejohnson@sharklasers.com'
-  @app.signup.firstname.set 'Kate'
-  @app.signup.lastname.set'Johnson'
+  @app.signup.username.set USERNAME1
+  @app.signup.password.set PASSWORD1
+  @app.signup.email.set EMAIL1
+  @app.signup.email2.set EMAIL21
+  @app.signup.firstname.set FIRSTNAME1
+  @app.signup.lastname.set LASTNAME1
   @app.signup.submit.click
 
-  @app.tp_email.visit
-  @app.tp_email.account 'bobharris'
-  sleep(5)
-  @app.tp_email.first_li.click
-  @browser.goto @app.tp_email.email_body.text[/http.+bob/]
-  @app.tp_email.visit
-  @app.tp_email.account 'katejohnson'
-  sleep(5)
-  @app.tp_email.first_li.click
-  @browser.goto @app.tp_email.email_body.text[/http.+kate/]
-  # @browser.a(title:'Admin User').click
-  # @browser.a(title:'Log out').click
-  # @app.login.visit
-  # sleep(2)
-  # @app.login.login 'kate', '12345678aB!'
-  @app.course_request_page.visit 
-  @app.course_request_page.fill_form fullname: 'Maths', shortname: 'Mthy', summary: 'This course will take you through the wonders of Maths', reason: 'Reason Maths message'
-  @browser.a(title:'Kate Johnson').click
-  @browser.a(title:'Log out').click
+  if (NUM_OF_USERS == 2)
+    @app.signup.visit
+    @app.signup.username.set USERNAME2
+    @app.signup.password.set PASSWORD2
+    @app.signup.email.set EMAIL2
+    @app.signup.email2.set EMAIL22
+    @app.signup.firstname.set FIRSTNAME2
+    @app.signup.lastname.set LASTNAME2
+    @app.signup.submit.click
+  end
   
+  if (NUM_OF_USERS == 2)
+    @app.tp_email.visit
+    @app.tp_email.account (EMAIL2)[/([^@]+)/]
+    sleep(3)
+    @app.tp_email.first_li.click
+    sleep(3)
+    @browser.goto @app.tp_email.email_body.text[/http.+#{USERNAME2}/]
+  end
+
+  @app.tp_email.visit
+  @app.tp_email.account (EMAIL1)[/([^@]+)/]
+  sleep(3)
+  @app.tp_email.first_li.click
+  sleep(3)
+  @browser.goto @app.tp_email.email_body.text[/http.+#{USERNAME1}/]
+
+  @app.course_request_page.visit 
+  @app.course_request_page.fill_form fullname: COURSE_NAME, shortname: SHORTNAME, summary: SUMMARY, reason: REASON
+  @browser.a(title:(FIRSTNAME1)+' '+(LASTNAME1)).click
+  @browser.a(title:'Log out').click
   @app.login.visit
   @app.login.admin_login
   @browser.goto 'http://unix.spartaglobal.com/moodle/course/pending.php'
-  @browser.tr(class: 'lastrow').button(value: 'Approve').click
+  @browser.tbody.trs.each do |row|
+    if row.tds[1].text == COURSE_NAME
+      row.input(value: 'Approve').click
+      break
+    end
+  end
+  @browser.goto 'http://unix.spartaglobal.com/moodle/course/management.php?categoryid=1'
+  @browser.a(text: COURSE_NAME).click
+  @browser.a(text: "Enrolled users").click
+  @browser.button(value: "Enrol users").click
+  @browser.select_list(id:"id_enrol_manual_assignable_roles").select("Teacher")
+  @browser.divs(class: 'users').each do |div|
+    if div.div(class: 'fullname').text == (FIRSTNAME1)+' '+(LASTNAME1)
+      div.button(class: 'enroll').click
+      break
+    end
+  end
   @browser.a(title:'Admin User').click
   @browser.a(title:'Log out').click
 end
@@ -89,23 +108,25 @@ end
 After ('@DITA6_teardown') do
   @app.login.visit
   @app.login.admin_login
-  @browser.goto EnvConfig.modify_users_url 
-  @browser.option(text:'Kate Johnson').select
-  @browser.button(id:'id_addsel').click
-  @browser.option(text:'Bob Harris').select
-  @browser.button(id:'id_addsel').click
-  @browser.option(text:'Delete').select
-  @browser.button(id:'id_doaction').click
-  @browser.button(value:'Yes').click
-  @browser.button(value:'Continue').click 
-  @browser.goto EnvConfig.course_manage_url
+  @browser.goto EnvConfig.course_manage_url 
   @browser.as(class: 'coursename').each_with_index do |course, i|
-    if course.text == 'Maths'
+    if course.text == COURSE_NAME
       @browser.imgs(alt: 'Delete')[i].click
       @browser.input(value: 'Continue').click
       break
     end
   end
+  @browser.goto EnvConfig.modify_users_url
+  if (NUM_OF_USERS == 2)
+    @browser.option(text:(FIRSTNAME2)+' '+(LASTNAME2)).select
+    @browser.button(id:'id_addsel').click
+  end
+  @browser.option(text:(FIRSTNAME1)+' '+(LASTNAME1)).select
+  @browser.button(id:'id_addsel').click
+  @browser.option(text:'Delete').select
+  @browser.button(id:'id_doaction').click
+  @browser.button(value:'Yes').click
+  @browser.button(value:'Continue').click    
 end
 
 After ('@course_teardown') do
@@ -113,7 +134,7 @@ After ('@course_teardown') do
   @app.login.admin_login
   @browser.goto EnvConfig.course_manage_url
   @browser.as(class: 'coursename').each_with_index do |course, i|
-    if course.text == COURSE_NAME
+    if course.text == 'Maths'
       @browser.imgs(alt: 'Delete')[i].click
       @browser.input(value: 'Continue').click
       break
