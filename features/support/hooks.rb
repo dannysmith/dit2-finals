@@ -95,9 +95,9 @@ Before ('@DITA6_setup') do
   @browser.a(text: "Enrolled users").click
   @browser.button(value: "Enrol users").click
   @browser.select_list(id:"id_enrol_manual_assignable_roles").select("Teacher")
-  @browser.divs(class: 'users').each do |div|
+  @browser.divs(class: 'user').each do |div|
     if div.div(class: 'fullname').text == (FIRSTNAME1)+' '+(LASTNAME1)
-      div.button(class: 'enroll').click
+      div.button(class: 'enrol').click
       break
     end
   end
