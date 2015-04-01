@@ -18,7 +18,7 @@ Feature: Event Calendar
     And I fill in the event details incorrectly
     Then I should be prompted with an error message
 
-  @event_teardown @DITA-39
+  @DITA-39
   Scenario: Successfully creating the user event
     Given I am logged in as user
     When I am on the new event page
