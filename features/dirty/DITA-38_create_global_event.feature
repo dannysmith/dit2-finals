@@ -1,4 +1,3 @@
-@wip
 Feature: Create Global Event
   As an Event Co-ordinator, I want to create global events so that my students can sign up to attend them.
 
