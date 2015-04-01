@@ -1,11 +1,15 @@
 EVENT_DETAILS = {
-  event_name: 'Global Event',
-  description: 'This is a global event'
+  event_name: 'Test Event',
+  description: 'This is a test event'
 }
 
-Given(/^I am logged in as admin$/) do
+Given(/^I am logged in as (admin|user)$/) do |account|
   @app.login.visit
-  @app.login.admin_login
+  if account == 'admin'
+    @app.login.admin_login
+  elsif account == 'user'
+    @app.login.user_login
+  end
 end
 
 When(/^I am on the new event page$/) do
@@ -24,7 +28,7 @@ When(/^I fill in the event details (correctly|incorrectly)$/) do |status|
   end
 end
 
-Then(/^I should see the global event on the Calendar page$/) do
+Then(/^I should see the (.+) event on the Calendar page$/) do
   @app.calendar.visit
   @app.calendar.find_event EVENT_DETAILS[:event_name]
   @app.calendar_day.check_details EVENT_DETAILS[:event_name], EVENT_DETAILS[:description]
