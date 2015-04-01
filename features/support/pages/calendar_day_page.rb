@@ -1,7 +1,7 @@
 class CalendarDayPage < GenericPage
   def check_details(event_name, description)
-    self.check_description = description
-    self.check_event_name = event_name
+    check_description = description
+    check_event_name = event_name
   end
 
   def check_description=(description)

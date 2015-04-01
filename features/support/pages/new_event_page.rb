@@ -10,7 +10,7 @@ class NewEventPage < GenericPage
   def fill_form(event_name, description)
     self.event_name = event_name
     self.description = description
-    self.submit
+    submit
   end
 
   def event_name=(name)
