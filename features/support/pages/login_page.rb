@@ -5,6 +5,10 @@ class LoginPage < GenericPage
     login: { id: 'login' }
   }
 
+  DATA = {
+    correct_users: EnvConfig.data['Correct']
+  }
+
   def visit
     @browser.goto EnvConfig.login_url
   end
@@ -29,5 +33,9 @@ class LoginPage < GenericPage
 
   def admin_login
     self.login EnvConfig.admin_username, EnvConfig.admin_password
+  end
+
+  def user_login
+    self.login DATA[:correct_users][0]['username'], DATA[:correct_users][0]['password']
   end
 end

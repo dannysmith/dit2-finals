@@ -21,6 +21,22 @@ Before do
   end
 end
 
+Before('@user_setup') do
+  unless $user_setup_hook
+    @app.signup.visit
+    @app.signup.fill_correct 0
+    @app.signup.submit.click
+
+    @app.tp_email.visit
+    @app.tp_email.account @app.signup.correct_users[0]["email"][/([^@]+)/]
+    @app.tp_email.first_li.click
+    sleep(3)
+    @browser.goto @app.tp_email.email_body.text[/http.+#{@app.signup.correct_users[0]["username"]}/]
+    @app.logout
+    $user_setup_hook = true
+  end
+end
+
 After ('@course_teardown') do
   @app.login.visit
   @app.login.admin_login
@@ -76,6 +92,12 @@ After ('@new_user_teardown') do
   end  
 end
 
+After('@event_calendar') do
+  unless condition
+    
+  end
+end
+
 After do |scenario|
 
   @browser.driver.manage.delete_all_cookies
@@ -95,6 +117,22 @@ end
 
 # After all features have executed
 at_exit do
+
+  @browser = browser
+  @app = App.new @browser
+
+  if $user_setup_hook
+    @app.login.visit
+    @app.login.admin_login
+    @browser.goto EnvConfig.modify_users_url 
+    name = EnvConfig.data['Correct'][0]["firstname"]+" "+EnvConfig.data['Correct'][0]["lastname"]
+    @browser.option(text:name).select
+    @browser.button(id:'id_addsel').click
+
+    @browser.option(text:'Delete').select
+    @browser.button(id:'id_doaction').click
+    @browser.button(value:'Yes').click
+  end
 
   browser.close
 
