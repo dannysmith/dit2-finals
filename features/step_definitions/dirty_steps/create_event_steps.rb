@@ -19,7 +19,7 @@ end
 When(/^I set the type of event to (.+)$/) do |type|
   @app.new_event.event_type = type
 end
-
+  
 When(/^I fill in the event details (correctly|incorrectly)$/) do |status|
   if status == 'correctly'
     @app.new_event.fill_form EVENT_DETAILS[:event_name], EVENT_DETAILS[:description]
@@ -28,7 +28,7 @@ When(/^I fill in the event details (correctly|incorrectly)$/) do |status|
   end
 end
 
-Then(/^I should see the (.+) event on the Calendar page$/) do
+Then(/^I should see the (?:.+) event on the Calendar page$/) do
   @app.calendar.visit
   @app.calendar.find_event EVENT_DETAILS[:event_name]
   @app.calendar_day.check_details EVENT_DETAILS[:event_name], EVENT_DETAILS[:description]
