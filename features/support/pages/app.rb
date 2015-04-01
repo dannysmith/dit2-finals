@@ -40,6 +40,18 @@ class App
     ThirdPartyEmail.new @browser
   end
 
+  def new_event
+    NewEventPage.new @browser
+  end
+
+  def calendar
+    CalendarPage.new @browser
+  end
+
+  def calendar_day
+    CalendarDayPage.new @browser
+  end
+
   def logout
     @browser.goto EnvConfig.logout_url
     @browser.input(value: 'Continue').click
