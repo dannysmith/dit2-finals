@@ -21,6 +21,7 @@ Then(/^I should receive an email to verify my account$/) do
 end
 
 When(/^I fill in the form incorrectly$/) do
+  #Can be uncommented however does make test slower
   #@app.signup.fill_incorrect 0
   #@app.signup.submit.click
 end
