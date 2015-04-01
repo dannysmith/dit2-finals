@@ -1,4 +1,4 @@
-@user_setup
+@user_register_enrollment
 Feature: Event Calendar
   As an Event Co-ordinator, I want to create events so that my students can sign up to attend them.
 
