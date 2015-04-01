@@ -21,21 +21,69 @@ Before do
   end
 end
 
+# Registering 2 users
+# Enrolling 1 user
+# 1 user shall create a course
+Before ('@user_register_enrollment') do
+  unless $multiple_users_setup_hook
+    user_setup(USER_DETAILS)
+    @app.login.visit
+    @app.login.login USER_DETAILS[:user2][:username], USER_DETAILS[:user2][:password]
+    course_setup(COURSE_DETAILS)
+    setup_enrollment((USER_DETAILS[:user1][:firstname])+' '+(USER_DETAILS[:user1][:lastname]))
+    $multiple_users_setup_hook= true
+  end
+end
 
-Before('@user_setup') do
-  unless $user_setup_hook
-    @app.signup.visit
-    @app.signup.fill_correct 0
+def user_setup(user_details)
+  @app.signup.visit
+  user_details.each do |key, user|
+    @app.signup.username = user[:username]
+    @app.signup.password = user[:password]
+    @app.signup.email = user[:email]
+    @app.signup.email2 = user[:email]
+    @app.signup.firstname = user[:firstname]
+    @app.signup.lastname = user[:lastname]
     @app.signup.submit.click
-
     @app.tp_email.visit
-    @app.tp_email.account @app.signup.correct_users[0]["email"][/([^@]+)/]
+    @app.tp_email.account(user[:email][/([^@]+)/])
     @app.tp_email.first_li.click
     sleep(3)
-    @browser.goto @app.tp_email.email_body.text[/http.+#{@app.signup.correct_users[0]["username"]}/]
+    @browser.goto @app.tp_email.email_body.text[/http.+#{user[:username]}/]
     @app.logout
-    $user_setup_hook = true
+    @app.signup.visit
   end
+end
+
+# Teacher account MUST exist
+def course_setup(course_details)
+  @app.course_request_page.visit
+  course_details.each do |key, course|
+    @app.course_request_page.fill_form fullname: course[:fullname], shortname: course[:shortname], summary: course[:summary], reason: course[:reason]
+    @app.course_request_page.visit
+  end
+  @app.logout
+  @app.login.visit
+  @app.login.admin_login
+  course_details.each do |key, course|
+    @app.course_pending.visit
+    @app.course_pending.approve course[:fullname]
+  end
+end
+
+def setup_enrollment(enroll_user)
+  @browser.goto 'http://unix.spartaglobal.com/moodle/course/management.php?categoryid=1'
+  @browser.a(text: COURSE_NAME).click
+  @browser.a(text: "Enrolled users").click
+  @browser.button(value: "Enrol users").click
+  @browser.select_list(id:"id_enrol_manual_assignable_roles").select("Teacher")
+  @browser.divs(class: 'users').each do |div|
+    if div.div(class: 'fullname').text == enroll_user
+      div.button(class: 'enroll').click
+      break
+    end
+  end
+end
 
 Before ('@DITA6_setup') do
   #@app.login.visit
