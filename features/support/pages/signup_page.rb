@@ -79,6 +79,30 @@ class SignUpPage < GenericPage
     @browser.text_field(ELEMENT[:lastname]).value= DATA[:incorrect_users][n]['lastname']
   end
 
+  def username=(username)
+    @browser.text_field(ELEMENT[:username]).value = username
+  end
+
+  def password=(password)
+    @browser.text_field(ELEMENT[:password]).value = password
+  end
+
+  def email=(email)
+    @browser.text_field(ELEMENT[:email]).value = email
+  end
+
+  def email2=(email2)
+    @browser.text_field(ELEMENT[:email2]).value = email2
+  end
+
+  def firstname=(firstname)
+    @browser.text_field(ELEMENT[:firstname]).value = firstname
+  end
+
+  def lastname=(lastname)
+    @browser.text_field(ELEMENT[:lastname]).value = lastname
+  end
+
   def error_form
     bool = false
     DATA[:error_text].each_with_index do |x,i|
