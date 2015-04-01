@@ -20,7 +20,7 @@ When(/^the course is approved by an administrator$/) do
   @app.login.visit
   @app.login.admin_login
   @app.course_pending.visit
-  @app.course_pending.approve
+  @app.course_pending.approve COURSE_NAME
 end
 
 Then(/^I should be able to see it on my list of courses$/) do
