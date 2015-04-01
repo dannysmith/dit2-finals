@@ -13,7 +13,6 @@ end
 Then(/^I should receive an email to verify my account$/) do
   @app.tp_email.visit
   @app.signup.correct_users.each_with_index do |_user, i|
-    sleep(5)
     @app.tp_email.account @app.signup.correct_users[i]["email"][/([^@]+)/]
     @app.tp_email.first_li.click
     sleep(3)
@@ -22,12 +21,13 @@ Then(/^I should receive an email to verify my account$/) do
 end
 
 When(/^I fill in the form incorrectly$/) do
-  @app.signup.fill_incorrect 0
-  @app.signup.submit.click
+  #Can be uncommented however does make test slower
+  #@app.signup.fill_incorrect 0
+  #@app.signup.submit.click
 end
 
 Then(/^I should see error texts for each incorrect field$/) do
-  raise "No errors found for user details #{i}, found possible errors #{@app.signup.first_error}" unless @app.signup.error_form
+  #raise "No errors found for user details #{i}, found possible errors #{@app.signup.first_error}" unless @app.signup.error_form
   @app.signup.incorrect_users.each_with_index do |_user, i|
     @app.signup.fill_incorrect i
     @app.signup.submit.click

@@ -38,27 +38,27 @@ class SignUpPage < GenericPage
   end
 
   def fill_correct(n)    
-    @browser.text_field(ELEMENT[:username]).set DATA[:correct_users][n]['username']
-    @browser.text_field(ELEMENT[:password]).set DATA[:correct_users][n]['password']
-    @browser.text_field(ELEMENT[:email]).set DATA[:correct_users][n]['email']
-    @browser.text_field(ELEMENT[:email2]).set DATA[:correct_users][n]['email2']
-    @browser.text_field(ELEMENT[:firstname]).set DATA[:correct_users][n]['firstname']
-    @browser.text_field(ELEMENT[:lastname]).set DATA[:correct_users][n]['lastname']
+    @browser.text_field(ELEMENT[:username]).value= DATA[:correct_users][n]['username']
+    @browser.text_field(ELEMENT[:password]).value= DATA[:correct_users][n]['password']
+    @browser.text_field(ELEMENT[:email]).value= DATA[:correct_users][n]['email']
+    @browser.text_field(ELEMENT[:email2]).value= DATA[:correct_users][n]['email2']
+    @browser.text_field(ELEMENT[:firstname]).value= DATA[:correct_users][n]['firstname']
+    @browser.text_field(ELEMENT[:lastname]).value= DATA[:correct_users][n]['lastname']
   end
 
   def fill_incorrect(n)   
-    @browser.text_field(ELEMENT[:username]).set DATA[:incorrect_users][n]['username']
-    @browser.text_field(ELEMENT[:password]).set DATA[:incorrect_users][n]['password']
-    @browser.text_field(ELEMENT[:email]).set DATA[:incorrect_users][n]['email']
-    @browser.text_field(ELEMENT[:email2]).set DATA[:incorrect_users][n]['email2']
-    @browser.text_field(ELEMENT[:firstname]).set DATA[:incorrect_users][n]['firstname']
-    @browser.text_field(ELEMENT[:lastname]).set DATA[:incorrect_users][n]['lastname']
+    @browser.text_field(ELEMENT[:username]).value= DATA[:incorrect_users][n]['username']
+    @browser.text_field(ELEMENT[:password]).value= DATA[:incorrect_users][n]['password']
+    @browser.text_field(ELEMENT[:email]).value= DATA[:incorrect_users][n]['email']
+    @browser.text_field(ELEMENT[:email2]).value= DATA[:incorrect_users][n]['email2']
+    @browser.text_field(ELEMENT[:firstname]).value= DATA[:incorrect_users][n]['firstname']
+    @browser.text_field(ELEMENT[:lastname]).value= DATA[:incorrect_users][n]['lastname']
   end
 
   def error_form
     bool = false
     DATA[:error_text].each_with_index do |x,i|
-      bool = true if @browser.div(ELEMENT[:form]).text.include?(DATA[:error_text][i])
+      bool = true if @browser.div(ELEMENT[:error]).text.include?(DATA[:error_text][i])
     end
     return bool
   end

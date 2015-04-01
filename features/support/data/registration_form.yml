@@ -54,7 +54,6 @@ Incorrect:
     lastname: student
 
 Error:
-  # error message for username
   - Missing username
   - Only lowercase letters allowed
   - Passwords must be at least 8 characters long
