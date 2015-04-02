@@ -25,7 +25,7 @@ end
 # Enrolling 1 user
 # 1 user shall create a course
 Before ('@user_register_enrollment') do
-  unless $multiple_users_setup_hook
+  unless $user_register_enrollment_hook
     user_setup(USER_DETAILS)
     @app.login.visit
     @app.login.login USER_DETAILS[:user2][:username], USER_DETAILS[:user2][:password]
@@ -33,7 +33,7 @@ Before ('@user_register_enrollment') do
     @app.login.visit
     @app.login.admin_login
     setup_enrollment((USER_DETAILS[:user1][:firstname])+' '+(USER_DETAILS[:user1][:lastname]), 'Student', COURSE_DETAILS[:course1])
-    $multiple_users_setup_hook= true
+    $user_register_enrollment_hook= true
   end
 end
 
@@ -91,6 +91,36 @@ def setup_enrollment(enroll_user, enroll_type, course)
     if user.div(class: 'fullname').text == enroll_user
       user.button(class: 'enrol').click
       break
+    end
+  end
+  @app.logout
+end
+
+def delete_users(user_details)
+  @app.login.visit
+  @app.login.admin_login
+  @browser.goto 'http://unix.spartaglobal.com/moodle/admin/user/user_bulk.php'
+  user_details.each do |key, users|
+    @browser.option(text: /^#{users[:firstname]} #{users[:lastname]}$/).select
+  end
+  @browser.input(value: "Add to selection").click
+  @browser.option(text: "Delete").select
+  @browser.input(value: "Go").click
+  @browser.input(value: "Yes").click
+  @app.logout
+end
+
+def delete_courses(course_details)
+  @app.login.visit
+  @app.login.admin_login
+  @browser.goto 'http://unix.spartaglobal.com/moodle/course/management.php?categoryid=1'
+  course_details.each do |key, course_name|
+    @browser.as(class: "coursename").each_with_index do |courses, i|
+      if courses.text == course_name[:fullname]
+        @browser.imgs(alt: 'Delete')[i].click
+        @browser.input(value: 'Continue').click
+        break
+      end
     end
   end
   @app.logout
@@ -387,6 +417,11 @@ at_exit do
   #   @browser.button(id:'id_doaction').click
   #   @browser.button(value:'Yes').click
   # end
+
+  if $user_register_enrollment_hook
+    delete_courses(COURSE_DETAILS)
+    delete_users(USER_DETAILS)
+  end
 
   browser.close
 
