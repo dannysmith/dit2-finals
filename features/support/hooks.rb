@@ -37,12 +37,127 @@ Before('@user_setup') do
   end
 end
 
+# Registering 2 users
+# Enrolling 1 user
+# 1 user shall create a course
+Before ('@user_register_enrollment') do
+  unless $multiple_users_setup_hook
+    user_setup(USER_DETAILS)
+    @app.login.visit
+    @app.login.login USER_DETAILS[:user2][:username], USER_DETAILS[:user2][:password]
+    course_setup(COURSE_DETAILS)
+    binding.pry
+    @app.login.visit
+    @app.login.admin_login
+    binding.pry
+    setup_enrollment((USER_DETAILS[:user1][:firstname])+' '+(USER_DETAILS[:user1][:lastname]), 'Student', COURSE_DETAILS[:course1])
+    binding.pry
+    $multiple_users_setup_hook= true
+  end
+end
+
+Before ('@user_course_setup') do
+  unless $user_course_setup
+    user_setup(USER_DETAILS)
+    @app.login.visit
+    @app.login.login USER_DETAILS[:user2][:username], USER_DETAILS[:user2][:password]
+    course_setup(COURSE_DETAILS)
+    $user_course_setup = true
+  end
+end
+
+def user_setup(user_details)
+  @app.signup.visit
+  user_details.each do |key, user|
+    @app.signup.username = user[:username]
+    @app.signup.password = user[:password]
+    @app.signup.email = user[:email]
+    @app.signup.email2 = user[:email]
+    @app.signup.firstname = user[:firstname]
+    @app.signup.lastname = user[:lastname]
+    @app.signup.submit.click
+    @app.tp_email.visit
+    @app.tp_email.account(user[:email][/([^@]+)/])
+    @app.tp_email.first_li.click
+    @browser.goto @app.tp_email.email_body.text[/http.+#{user[:username]}/]
+    @app.logout
+    @app.signup.visit
+  end
+end
+
+# Teacher account MUST exist
+def course_setup(course_details)
+  @app.course_request_page.visit
+  course_details.each do |key, course|
+    @app.course_request_page.fill_form fullname: course[:fullname], shortname: course[:shortname], summary: course[:summary], reason: course[:reason]
+    @app.course_request_page.visit
+  end
+  @app.logout
+  @app.login.visit
+  @app.login.admin_login
+  course_details.each do |key, course|
+    @app.course_pending.visit
+    @app.course_pending.approve course[:fullname]
+    COURSE_ID[course[:fullname].to_sym] = @app.course_approved.get_course_id
+  end
+  @app.logout
+end
+
+def setup_enrollment(enroll_user, enroll_type, course)
+  @browser.goto 'http://unix.spartaglobal.com/moodle/course/management.php?categoryid=1'
+  @browser.a(text: course[:fullname]).click
+  @browser.a(text: "Enrolled users").click
+  @browser.button(value: "Enrol users").click
+  @browser.select_list(id:"id_enrol_manual_assignable_roles").select(enroll_type)
+  @browser.divs(class: 'user').each do |user|
+    if user.div(class: 'fullname').text == enroll_user
+      user.button(class: 'enrol').click
+      break
+    end
+  end
+  @app.logout
+end
+
+Before ('@DITA6_setup') do
+  user1 = {username:'bob', password:'12345678aB!', email:'bobharris@sharklasers.com', firstname:'Bob', lastname:'Harris'}
+  user2  = {username: 'kate', password:'12345678aB!', email:'katejohnson@sharklasers.com', firstname:'Kate', lastname:'Johnson'}
+  user_setup ({user1: user1, user2: user2})
+  @app.login.visit
+  @app.login.login 'bob', '12345678aB!'
+  course_setup ({course1:{fullname: 'ITA', shortname: 'ITA', summary: 'IT ITA', reason: 'REASON ITA MESSAGE'}})
+  @app.login.visit
+  @app.login.admin_login
+  setup_enrollment('Bob Harris', 'Teacher', {fullname: 'ITA'})
+end
+
+After ('@DITA6_teardown') do
+  @app.login.visit
+  @app.login.admin_login
+  @browser.goto EnvConfig.course_manage_url 
+  @browser.as(class: 'coursename').each_with_index do |course, i|
+    if course.text == 'ITA'
+      @browser.imgs(alt: 'Delete')[i].click
+      @browser.input(value: 'Continue').click
+      break
+    end
+  end
+  @browser.goto EnvConfig.modify_users_url
+  @browser.option(text:'Kate Johnson').select
+  @browser.button(id:'id_addsel').click
+  @browser.option(text:'Bob Harris').select
+  @browser.button(id:'id_addsel').click
+  @browser.option(text:'Delete').select
+  @browser.button(id:'id_doaction').click
+  @browser.button(value:'Yes').click
+  @browser.button(value:'Continue').click    
+end
+
 After ('@course_teardown') do
   @app.login.visit
   @app.login.admin_login
   @browser.goto EnvConfig.course_manage_url
   @browser.as(class: 'coursename').each_with_index do |course, i|
-    if course.text == COURSE_NAME
+    if course.text == 'Maths'
       @browser.imgs(alt: 'Delete')[i].click
       @browser.input(value: 'Continue').click
       break

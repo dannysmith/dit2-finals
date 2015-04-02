@@ -52,6 +52,14 @@ class App
     CalendarDayPage.new @browser
   end
 
+  def course_enrol
+    CourseEnrolPage.new @browser
+  end
+
+  def course_approved
+    CourseApprovedPage.new @browser
+  end
+
   def logout
     @browser.goto EnvConfig.logout_url
     @browser.input(value: 'Continue').click
