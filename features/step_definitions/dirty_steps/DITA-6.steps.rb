@@ -16,7 +16,7 @@
 # FIRSTNAME2 = 'Kate'
 # LASTNAME2 = 'Johnson'
 # URL = 'http://unix.spartaglobal.com/moodle/course/index.php?categoryid=1'
-
+COURSE_ID = {}
 Given(/^I am signed in as a teacher$/) do
   @app.login.visit
   eventually{ @app.login.login USERNAME1, PASSWORD1 }
