@@ -35,6 +35,7 @@ Before('@user_setup') do
     @app.logout
     $user_setup_hook = true
   end
+end
 
 # Registering 2 users
 # Enrolling 1 user

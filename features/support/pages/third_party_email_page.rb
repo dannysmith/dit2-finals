@@ -20,6 +20,7 @@ class ThirdPartyEmail < GenericPage
     @browser.span(id:"inbox-id").click    
     @browser.span(id:"inbox-id").text_field.set account[/([^@]+)/]
     @browser.button(class: "save button small").click
+    sleep(3)
   end
 
   def first_li

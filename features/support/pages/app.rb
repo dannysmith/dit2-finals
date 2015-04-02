@@ -50,6 +50,7 @@ class App
 
   def calendar_day
     CalendarDayPage.new @browser
+  end
 
   def course_enrol
     CourseEnrolPage.new @browser

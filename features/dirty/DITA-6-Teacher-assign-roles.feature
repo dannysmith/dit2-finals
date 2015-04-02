@@ -1,4 +1,4 @@
-@DITA6_setup @DITA6_teardown @wip
+@DITA6_setup @DITA6_teardown
 Feature: Teacher assigning roles to users
   As a Teacher I want to be able to assign a user to a course so that he/she can perform teacher-related tasks on that course.
 
