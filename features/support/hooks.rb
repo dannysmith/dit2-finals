@@ -93,7 +93,6 @@ def setup_enrollment(enroll_user, enroll_type, course)
       break
     end
   end
-  binding.pry
   @app.logout
 end
 
