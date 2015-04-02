@@ -56,10 +56,13 @@ Before ('@user_register_enrollment') do
 end
 
 Before ('@user_course_setup') do
-  user_setup(USER_DETAILS)
-  @app.login.visit
-  @app.login.login USER_DETAILS[:user2][:username], USER_DETAILS[:user2][:password]
-  course_setup(COURSE_DETAILS)
+  unless $user_course_setup
+    user_setup(USER_DETAILS)
+    @app.login.visit
+    @app.login.login USER_DETAILS[:user2][:username], USER_DETAILS[:user2][:password]
+    course_setup(COURSE_DETAILS)
+    $user_course_setup = true
+  end
 end
 
 def user_setup(user_details)
