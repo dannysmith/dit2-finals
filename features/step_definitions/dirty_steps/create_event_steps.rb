@@ -5,25 +5,25 @@ EVENT_DETAILS = {
 
 USER_DETAILS = {
   user1: {
-    username: 'njewootah',
+    username: 'njewootahdita40',
     password: 'Jewootah1!',
-    email: 'nini@sharklasers.com',
+    email: 'ninidita40@sharklasers.com',
     firstname: 'Nini',
-    lastname: 'Jewootah'
+    lastname: 'DITA40'
   },
   user2: {
-    username: 'richard',
+    username: 'richarddita40',
     password: 'Twenaaa1!',
-    email: 'rtwena@sharklasers.com',
+    email: 'rtwenadita40@sharklasers.com',
     firstname: 'Richard',
-    lastname: 'Twena'
+    lastname: 'DITA40'
   }
 }
 
 COURSE_DETAILS = {
   course1: {
-    fullname: "Computer Science",
-    shortname: "CScience",
+    fullname: "DITA40 DITA40",
+    shortname: "DITA40",
     summary: "Engineer course",
     reason: "nerds"
   }
@@ -64,10 +64,6 @@ Then(/^I should be prompted with an error message$/) do
   @app.new_event.check_error
 end
 
-Given(/^a student is enrolled on my course$/) do
-  pending # Write code here that turns the phrase above into concrete actions
-end
-
 Given(/^a group exists$/) do
-  pending # Write code here that turns the phrase above into concrete actions
+  pending
 end
