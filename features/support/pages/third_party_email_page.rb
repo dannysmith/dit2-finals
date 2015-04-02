@@ -23,7 +23,10 @@ class ThirdPartyEmail < GenericPage
   end
 
   def first_li
-    AsyncSupport.eventually{@browser.tr(class: 'email_unread').td(class:'td2').text == 'admin@spartaglobal.com'}
+    AsyncSupport.eventually{
+      @browser.tr(class: 'email_unread').td(class:'td2').text == 'admin@spartaglobal.com'
+      @browser.tr(class: 'email_unread').td(class:'td3').span.text == 'A new account has been requested at \'Spartiaite LMS\' using your email address.'
+    }
     @browser.tr
   end
 
