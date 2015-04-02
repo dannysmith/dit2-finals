@@ -27,8 +27,8 @@ Then(/^I should be able to see it on my list of courses$/) do
   @app.logout
   @app.login.visit
   @app.login.login 'spartatest1', 'Spartatest1!'
-  @app.course_search_page.visit 'Software Engineering'
-  @app.course_search_page.check_results 'Software Engineering'
+  @app.course_search_page.visit COURSE_NAME
+  @app.course_search_page.check_results COURSE_NAME
 end
 
 Then(/^it should not allow me to create the course$/) do
