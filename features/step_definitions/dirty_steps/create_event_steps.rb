@@ -34,12 +34,18 @@ Given(/^I am logged in as (admin|user)$/) do |account|
   if account == 'admin'
     @app.login.admin_login
   elsif account == 'user'
-    @app.login.login USER_DETAILS[:user1][:username], USER_DETAILS[:user1][:password]
+    @app.login.login USER_DETAILS[:user2][:username], USER_DETAILS[:user2][:password]
   end
 end
 
-When(/^I am on the new event page$/) do
-  @app.new_event.visit
+When(/^I am on the (.+) event page$/) do |type|
+  if type == 'new'
+    @app.new_event.visit
+  elsif type == 'course'
+    @app.my_course.visit
+    @app.my_course.select_course COURSE_DETAILS[:course1][:fullname]
+    @app.course_details.select_new_event
+  end
 end
 
 When(/^I set the type of event to (.+)$/) do |type|
@@ -65,5 +71,13 @@ Then(/^I should be prompted with an error message$/) do
 end
 
 Given(/^a group exists$/) do
-  pending
+  @app.my_course.visit
+  binding.pry
+  @app.my_course.select_course COURSE_DETAILS[:course1][:fullname]
+  binding.pry
+  @app.course_details.select_group
+  @app.group.select_create_group
+  @app.manage_group.submit_group_name "Test Group"
+  @app.group.select_add_members
+  @app.create_member.add_members USER_DETAILS[:user1][:firstname], USER_DETAILS[:user2][:firstname]
 end
