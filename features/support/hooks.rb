@@ -95,6 +95,7 @@ def course_setup(course_details)
   course_details.each do |key, course|
     @app.course_pending.visit
     @app.course_pending.approve course[:fullname]
+    COURSE_ID[course[:fullname].to_sym] = @app.course_approved.get_course_id
   end
   @app.logout
 end
@@ -117,7 +118,9 @@ end
 Before ('@DITA6_setup') do
   #@app.login.visit
   #@app.login.admin_login
-  user_setup {username: 'bob', password:'12345678aB!', email:'bobharris@sharklasers.com', firstname:'Bob', lastname:'Harris'}
+  user1 = {username:'bob', password:'12345678aB!', email:'bobharris@sharklasers.com', firstname:'Bob', lastname:'Harris'}
+  user2  = {username: 'kate', password:'12345678aB!', email:'katejohnson@sharklasers.com', firstname:'Kate', lastname:'Johnson'}
+  user_setup ({user1: user1, user2: user2})
   # @app.signup.visit
   # @app.signup.username.set USERNAME1
   # @app.signup.password.set PASSWORD1
@@ -127,8 +130,8 @@ Before ('@DITA6_setup') do
   # @app.signup.lastname.set LASTNAME1
   # @app.signup.submit.click
 
-  if (NUM_OF_USERS == 2)
-    user_setup {username: 'kate', password:'12345678aB!', email:'katejohnson@sharklasers.com', firstname:'Kate', lastname:'Johnson'}
+  # if (NUM_OF_USERS == 2)
+    # user_setup ({username: 'kate', password:'12345678aB!', email:'katejohnson@sharklasers.com', firstname:'Kate', lastname:'Johnson'})
     # @app.signup.visit
     # @app.signup.username.set USERNAME2
     # @app.signup.password.set PASSWORD2
@@ -137,7 +140,7 @@ Before ('@DITA6_setup') do
     # @app.signup.firstname.set FIRSTNAME2
     # @app.signup.lastname.set LASTNAME2
     # @app.signup.submit.click
-  end
+  # end
   
   # if (NUM_OF_USERS == 2)
   #   @app.tp_email.visit
@@ -155,7 +158,7 @@ Before ('@DITA6_setup') do
   # sleep(3)
   # @browser.goto @app.tp_email.email_body.text[/http.+#{USERNAME1}/]
   eventually{ @app.login.login 'bob', '12345678aB!' }
-  course_setup {fullname: 'ITA', shortname: 'ITA', summary: 'IT ITA', reason: 'REASON ITA MESSAGE'}
+  course_setup ({fullname: 'ITA', shortname: 'ITA', summary: 'IT ITA', reason: 'REASON ITA MESSAGE'})
   @app.logout
   @app.login.visit
   eventually { @app.login.admin_login }
