@@ -38,7 +38,7 @@ Feature: Event Calendar
   Scenario: Successfully creating the group event
     Given I am logged in as user
     And a group exists
-    When I am on the new event page
+    When I am on the course event page
     And I set the type of event to Group
     And I fill in the event details correctly
     Then I should see the group event on the Calendar page
@@ -47,7 +47,7 @@ Feature: Event Calendar
   Scenario: Entering incorrect user group details
     Given I am logged in as user
     And a group exists
-    When I am on the new event page
+    When I am on the course event page
     And I set the type of event to Group
     And I fill in the event details incorrectly
     Then I should be prompted with an error message
