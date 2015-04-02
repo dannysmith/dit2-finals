@@ -126,6 +126,17 @@ def delete_courses(course_details)
   @app.logout
 end
 
+def delete_courses_ID(course_IDs)
+  @app.login.visit
+  @app.login.admin_login
+  @browser.goto 'http://unix.spartaglobal.com/moodle/course/management.php?categoryid=1'
+  course_IDs.each do |key, course_id|
+    @browser.goto "http://unix.spartaglobal.com/moodle/course/delete.php?id=#{course_id}"
+    @browser.button(value: 'Continue').click
+  end
+  @app.logout
+end
+
 Before ('@DITA6_setup') do
   # @app.login.visit
   # @app.login.admin_login
@@ -417,6 +428,24 @@ at_exit do
   #   @browser.button(id:'id_doaction').click
   #   @browser.button(value:'Yes').click
   # end
+
+  if $user_course_setup
+    # @app.login.visit
+    # @app.login.admin_login
+    # @browser.goto "http://unix.spartaglobal.com/moodle/course/delete.php?id=#{COURSE_ID[(COURSE_DETAILS[:course1][:fullname]).to_sym]}"
+    # @browser.button(value: 'Continue').click
+    # @browser.goto "http://unix.spartaglobal.com/moodle/course/delete.php?id=#{COURSE_ID[(COURSE_DETAILS[:course2][:fullname]).to_sym]}"
+    # @browser.button(value: 'Continue').click
+    delete_users(USER_DETAILS)
+    delete_courses_ID(COURSE_ID)
+    # @browser.goto 'http://unix.spartaglobal.com/moodle/admin/user/user_bulk.php'
+    # @browser.option(text: (USER_DETAILS[:user1][:firstname]+" "+USER_DETAILS[:user1][:lastname])).select
+    # @browser.option(text: (USER_DETAILS[:user2][:firstname]+" "+USER_DETAILS[:user2][:lastname])).select
+    # @browser.button(id: 'id_addsel').click
+    # @browser.option(text:'Delete').select
+    # @browser.button(id:'id_doaction').click
+    # @browser.button(value:'Yes').click
+  end
 
   if $user_register_enrollment_hook
     delete_courses(COURSE_DETAILS)
