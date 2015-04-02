@@ -37,7 +37,6 @@ Feature: Event Calendar
   @DITA-40 @wip
   Scenario: Successfully creating the group event
     Given I am logged in as user
-    And a student is enrolled on my course
     And a group exists
     When I am on the new event page
     And I set the type of event to Group
@@ -47,7 +46,6 @@ Feature: Event Calendar
   @DITA-40
   Scenario: Entering incorrect user group details
     Given I am logged in as user
-    And a student is enrolled on my course
     And a group exists
     When I am on the new event page
     And I set the type of event to Group
