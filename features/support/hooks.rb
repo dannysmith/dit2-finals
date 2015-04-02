@@ -55,6 +55,13 @@ Before ('@user_register_enrollment') do
   end
 end
 
+Before ('@user_course_setup') do
+  user_setup(USER_DETAILS)
+  @app.login.visit
+  @app.login.login USER_DETAILS[:user2][:username], USER_DETAILS[:user2][:password]
+  course_setup(COURSE_DETAILS)
+end
+
 def user_setup(user_details)
   @app.signup.visit
   user_details.each do |key, user|
