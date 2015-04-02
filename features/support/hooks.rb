@@ -46,7 +46,7 @@ end
 
 def user_setup(user_details)
   @app.signup.visit
-  user_details.each do |_key, user|
+  user_details.each do |key, user|
     @app.signup.username = user[:username]
     @app.signup.password = user[:password]
     @app.signup.email = user[:email]
@@ -57,7 +57,6 @@ def user_setup(user_details)
     @app.tp_email.visit
     @app.tp_email.account(user[:email][/([^@]+)/])
     @app.tp_email.first_li.click
-    sleep(10)
     @browser.goto @app.tp_email.email_body.text[/http.+#{user[:username]}/]
     @app.logout
     @app.signup.visit
@@ -67,19 +66,37 @@ end
 # Teacher account MUST exist
 def course_setup(course_details)
   @app.course_request_page.visit
-  course_details.each do |_key, course|
+  course_details.each do |key, course|
     @app.course_request_page.fill_form fullname: course[:fullname], shortname: course[:shortname], summary: course[:summary], reason: course[:reason]
     @app.course_request_page.visit
   end
   @app.logout
   @app.login.visit
   @app.login.admin_login
-  course_details.each do |_key, course|
+  course_details.each do |key, course|
     @app.course_pending.visit
     @app.course_pending.approve course[:fullname]
+    COURSE_ID[course[:fullname].to_sym] = @app.course_approved.get_course_id
   end
   @app.logout
 end
+
+# Teacher account MUST exist
+# def course_setup(course_details)
+#   @app.course_request_page.visit
+#   course_details.each do |_key, course|
+#     @app.course_request_page.fill_form fullname: course[:fullname], shortname: course[:shortname], summary: course[:summary], reason: course[:reason]
+#     @app.course_request_page.visit
+#   end
+#   @app.logout
+#   @app.login.visit
+#   @app.login.admin_login
+#   course_details.each do |_key, course|
+#     @app.course_pending.visit
+#     @app.course_pending.approve course[:fullname]
+#   end
+#   @app.logout
+# end
 
 def setup_enrollment(enroll_user, enroll_type, course)
   @browser.goto EnvConfig.course_manage_url
@@ -232,58 +249,6 @@ Before ('@user_course_setup') do
     course_setup(COURSE_DETAILS)
     $user_course_setup = true
   end
-end
-
-def user_setup(user_details)
-  @app.signup.visit
-  user_details.each do |key, user|
-    @app.signup.username = user[:username]
-    @app.signup.password = user[:password]
-    @app.signup.email = user[:email]
-    @app.signup.email2 = user[:email]
-    @app.signup.firstname = user[:firstname]
-    @app.signup.lastname = user[:lastname]
-    @app.signup.submit.click
-    @app.tp_email.visit
-    @app.tp_email.account(user[:email][/([^@]+)/])
-    @app.tp_email.first_li.click
-    @browser.goto @app.tp_email.email_body.text[/http.+#{user[:username]}/]
-    @app.logout
-    @app.signup.visit
-  end
-end
-
-# Teacher account MUST exist
-def course_setup(course_details)
-  @app.course_request_page.visit
-  course_details.each do |key, course|
-    @app.course_request_page.fill_form fullname: course[:fullname], shortname: course[:shortname], summary: course[:summary], reason: course[:reason]
-    @app.course_request_page.visit
-  end
-  @app.logout
-  @app.login.visit
-  @app.login.admin_login
-  course_details.each do |key, course|
-    @app.course_pending.visit
-    @app.course_pending.approve course[:fullname]
-    COURSE_ID[course[:fullname].to_sym] = @app.course_approved.get_course_id
-  end
-  @app.logout
-end
-
-def setup_enrollment(enroll_user, enroll_type, course)
-  @browser.goto 'http://unix.spartaglobal.com/moodle/course/management.php?categoryid=1'
-  @browser.a(text: course[:fullname]).click
-  @browser.a(text: "Enrolled users").click
-  @browser.button(value: "Enrol users").click
-  @browser.select_list(id:"id_enrol_manual_assignable_roles").select(enroll_type)
-  @browser.divs(class: 'user').each do |user|
-    if user.div(class: 'fullname').text == enroll_user
-      user.button(class: 'enrol').click
-      break
-    end
-  end
-  @app.logout
 end
 
 Before ('@DITA6_setup') do
@@ -448,7 +413,7 @@ at_exit do
   end
 
   if $user_register_enrollment_hook
-    delete_courses(COURSE_DETAILS)
+    delete_courses_ID(COURSE_ID)
     delete_users(USER_DETAILS)
   end
 
