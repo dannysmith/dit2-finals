@@ -58,6 +58,25 @@ class App
 
   def course_approved
     CourseApprovedPage.new @browser
+
+  def group
+    GroupPage.new @browser
+  end
+
+  def course_details
+    CourseDetailsPage.new @browser
+  end
+
+  def my_course
+    MyCoursePage.new @browser
+  end
+
+  def manage_group
+    ManageGroupPage.new @browser
+  end
+
+  def create_member
+    CreateMemberPage.new @browser
   end
 
   def logout
