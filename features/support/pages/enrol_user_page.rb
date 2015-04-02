@@ -19,7 +19,6 @@ class CourseEnrolPage < GenericPage
   end
 
   def enrol(firstname, lastname)
-    raise "Enrol users list is not visible" unless @browser.divs(ELEMENT[:user_list]).visible?
     @browser.divs(ELEMENT[:user_list]).each do |div|
       if div.div(ELEMENT[:user_name]).text == (firstname)+' '+(lastname)
         div.button(ELEMENT[:enrol_button]).click
@@ -28,16 +27,22 @@ class CourseEnrolPage < GenericPage
     end
   end
 
-  def finish_enroling
+  def finish_enroling_button
     @browser.button(value: "Finish enrolling users")
   end
 
   def check_role (fullname)
+    role = ""
     @browser.trs(class: 'userinforow').each do |tr|
-      if tr.div(class: 'subfield subfield_firstname').text == (FIRSTNAME2)+' '+(LASTNAME2)
-        expect(tr.div(class: "role role_3").text).to eq('Teacher')
+      if tr.div(class: 'subfield subfield_firstname').text == fullname
+        role = tr.div(class: "role role_3").text
         break
       end
     end
+    role
+  end
+
+  def assign_role (role)
+    @browser.select_list(id:"id_enrol_manual_assignable_roles").select role
   end
 end
