@@ -1,3 +1,5 @@
+require_relative "../async_support.rb"
+
 class ThirdPartyEmail < GenericPage
   ELEMENT = {
     email_account: {id:"inbox-id"},
@@ -21,12 +23,13 @@ class ThirdPartyEmail < GenericPage
   end
 
   def first_li
-    sleep(3)
+    AsyncSupport.eventually{@browser.tr(class: 'email_unread').td(class:'td2').text == 'admin@spartaglobal.com'}
     @browser.tr
   end
 
   def email_body
+    AsyncSupport.eventually{ @browser.div(ELEMENT[:email_content]).text.include? 'admin@spartaglobal.com'}
     @browser.div(ELEMENT[:email_content])
   end
-end
 
+end

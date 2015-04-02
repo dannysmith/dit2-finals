@@ -1,3 +1,5 @@
+require_relative "../async_support.rb"
+
 class LoginPage < GenericPage
   ELEMENT = {
     username: { name: 'username' },
@@ -14,9 +16,11 @@ class LoginPage < GenericPage
   end
 
   def login(username, password)
+    AsyncSupport.eventually{
     self.username= username
     self.password= password
     self.click_login_button
+    }
   end
 
   def username=(username)

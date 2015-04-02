@@ -75,7 +75,6 @@ def user_setup(user_details)
     @app.tp_email.visit
     @app.tp_email.account(user[:email][/([^@]+)/])
     @app.tp_email.first_li.click
-    sleep(3)
     @browser.goto @app.tp_email.email_body.text[/http.+#{user[:username]}/]
     @app.logout
     @app.signup.visit
@@ -157,13 +156,12 @@ Before ('@DITA6_setup') do
   # @app.tp_email.first_li.click
   # sleep(3)
   # @browser.goto @app.tp_email.email_body.text[/http.+#{USERNAME1}/]
-  eventually{ @app.login.login 'bob', '12345678aB!' }
-  course_setup ({fullname: 'ITA', shortname: 'ITA', summary: 'IT ITA', reason: 'REASON ITA MESSAGE'})
-  @app.logout
   @app.login.visit
-  eventually { @app.login.admin_login }
+  @app.login.login 'bob', '12345678aB!'
+  course_setup ({fullname: 'ITA', shortname: 'ITA', summary: 'IT ITA', reason: 'REASON ITA MESSAGE'})
+  @app.login.visit
+  @app.login.admin_login
   setup_enrollment((FIRSTNAME1)+' '+(LASTNAME1), enroll_type, {fullname: 'ITA'})
-  @app.logout
   # @app.login.admin_login
   # @app.course_request_page.visit 
   # @app.course_request_page.fill_form fullname: COURSE_NAME, shortname: SHORTNAME, summary: SUMMARY, reason: REASON

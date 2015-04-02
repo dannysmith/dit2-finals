@@ -1,5 +1,5 @@
-module AsyncSupport
-  def eventually
+class AsyncSupport
+  def self.eventually
     timeout = 2
     polling_interval = 0.1
     time_limit = Time.now + timeout
@@ -16,4 +16,3 @@ module AsyncSupport
     end
   end
 end
-World(AsyncSupport)
