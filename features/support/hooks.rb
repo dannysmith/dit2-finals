@@ -30,15 +30,19 @@ Before ('@user_register_enrollment') do
     @app.login.visit
     @app.login.login USER_DETAILS[:user2][:username], USER_DETAILS[:user2][:password]
     course_setup(COURSE_DETAILS)
-    binding.pry
     @app.login.visit
     @app.login.admin_login
-    binding.pry
     setup_enrollment((USER_DETAILS[:user1][:firstname])+' '+(USER_DETAILS[:user1][:lastname]), 'Student', COURSE_DETAILS[:course1])
-    binding.pry
     $multiple_users_setup_hook= true
   end
 end
+
+Before ('@setup course') do
+  unless $multiple_users_setup_hook
+    course_setup(COURSE_DETAILS)
+    $multiple_users_setup_hook= true
+    end
+  end
 
 def user_setup(user_details)
   @app.signup.visit
@@ -89,6 +93,7 @@ def setup_enrollment(enroll_user, enroll_type, course)
       break
     end
   end
+  binding.pry
   @app.logout
 end
 
