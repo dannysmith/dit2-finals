@@ -30,7 +30,12 @@ Before ('@user_register_enrollment') do
     @app.login.visit
     @app.login.login USER_DETAILS[:user2][:username], USER_DETAILS[:user2][:password]
     course_setup(COURSE_DETAILS)
-    setup_enrollment((USER_DETAILS[:user1][:firstname])+' '+(USER_DETAILS[:user1][:lastname]))
+    binding.pry
+    @app.login.visit
+    @app.login.admin_login
+    binding.pry
+    setup_enrollment((USER_DETAILS[:user1][:firstname])+' '+(USER_DETAILS[:user1][:lastname]), 'Student', COURSE_DETAILS[:course1])
+    binding.pry
     $multiple_users_setup_hook= true
   end
 end
@@ -69,20 +74,22 @@ def course_setup(course_details)
     @app.course_pending.visit
     @app.course_pending.approve course[:fullname]
   end
+  @app.logout
 end
 
-def setup_enrollment(enroll_user)
+def setup_enrollment(enroll_user, enroll_type, course)
   @browser.goto 'http://unix.spartaglobal.com/moodle/course/management.php?categoryid=1'
-  @browser.a(text: COURSE_NAME).click
+  @browser.a(text: course[:fullname]).click
   @browser.a(text: "Enrolled users").click
   @browser.button(value: "Enrol users").click
-  @browser.select_list(id:"id_enrol_manual_assignable_roles").select("Teacher")
-  @browser.divs(class: 'users').each do |div|
-    if div.div(class: 'fullname').text == enroll_user
-      div.button(class: 'enroll').click
+  @browser.select_list(id:"id_enrol_manual_assignable_roles").select(enroll_type)
+  @browser.divs(class: 'user').each do |user|
+    if user.div(class: 'fullname').text == enroll_user
+      user.button(class: 'enrol').click
       break
     end
   end
+  @app.logout
 end
 
 Before ('@DITA6_setup') do
@@ -364,18 +371,18 @@ at_exit do
   @browser = browser
   @app = App.new @browser
 
-  if $user_setup_hook
-    @app.login.visit
-    @app.login.admin_login
-    @browser.goto EnvConfig.modify_users_url 
-    name = EnvConfig.data['Correct'][0]["firstname"]+" "+EnvConfig.data['Correct'][0]["lastname"]
-    @browser.option(text:name).select
-    @browser.button(id:'id_addsel').click
+  # if $user_setup_hook
+  #   @app.login.visit
+  #   @app.login.admin_login
+  #   @browser.goto EnvConfig.modify_users_url 
+  #   name = EnvConfig.data['Correct'][0]["firstname"]+" "+EnvConfig.data['Correct'][0]["lastname"]
+  #   @browser.option(text:name).select
+  #   @browser.button(id:'id_addsel').click
 
-    @browser.option(text:'Delete').select
-    @browser.button(id:'id_doaction').click
-    @browser.button(value:'Yes').click
-  end
+  #   @browser.option(text:'Delete').select
+  #   @browser.button(id:'id_doaction').click
+  #   @browser.button(value:'Yes').click
+  # end
 
   browser.close
 
