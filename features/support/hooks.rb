@@ -161,10 +161,11 @@ Before ('@DITA6_setup') do
   # @browser.goto @app.tp_email.email_body.text[/http.+#{USERNAME1}/]
   @app.login.visit
   @app.login.login 'bob', '12345678aB!'
-  course_setup ({fullname: 'ITA', shortname: 'ITA', summary: 'IT ITA', reason: 'REASON ITA MESSAGE'})
+  course_setup ({course1:{fullname: 'ITA', shortname: 'ITA', summary: 'IT ITA', reason: 'REASON ITA MESSAGE'}})
   @app.login.visit
   @app.login.admin_login
   setup_enrollment((FIRSTNAME1)+' '+(LASTNAME1), enroll_type, {fullname: 'ITA'})
+  binding.pry
   # @app.login.admin_login
   # @app.course_request_page.visit 
   # @app.course_request_page.fill_form fullname: COURSE_NAME, shortname: SHORTNAME, summary: SUMMARY, reason: REASON
