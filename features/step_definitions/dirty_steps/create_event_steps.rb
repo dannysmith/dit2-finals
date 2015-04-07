@@ -29,6 +29,8 @@ COURSE_DETAILS = {
   }
 }
 
+COURSE_ID = {}
+
 Given(/^I am logged in as (admin|user)$/) do |account|
   @app.login.visit
   if account == 'admin'
@@ -42,7 +44,7 @@ When(/^I am on the (.+) event page$/) do |type|
   if type == 'new'
     @app.new_event.visit
   elsif type == 'course'
-    @app.new_event.visit COURSE_ID
+    @app.new_event.visit COURSE_ID[(COURSE_DETAILS[:course1][:fullname]).to_sym]
   end
 end
 
@@ -69,12 +71,8 @@ Then(/^I should be prompted with an error message$/) do
 end
 
 Given(/^a group exists$/) do
-  @app.my_course.visit
-  COURSE_ID = @app.my_course.get_course_id COURSE_DETAILS[:course1][:fullname]
-  @app.create_group.visit COURSE_ID
+  @app.create_group.visit COURSE_ID[(COURSE_DETAILS[:course1][:fullname]).to_sym]
   @app.create_group.submit_form "Test Group"
   @app.group.select_add_members
   @app.create_member.submit_form USER_DETAILS[:user1][:firstname], USER_DETAILS[:user2][:firstname]
-
-  # DELETE COURSE DETAILS (GOES TO USERS THEN GROUPS)
 end

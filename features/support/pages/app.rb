@@ -58,6 +58,7 @@ class App
 
   def course_approved
     CourseApprovedPage.new @browser
+  end
 
   def group
     GroupPage.new @browser

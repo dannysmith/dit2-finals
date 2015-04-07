@@ -34,7 +34,7 @@ Feature: Event Calendar
     And I fill in the event details incorrectly
     Then I should be prompted with an error message
 
-  @DITA-40
+  @DITA-40 @wip
   Scenario: Successfully creating the group event
     Given I am logged in as user
     And a group exists
@@ -43,7 +43,7 @@ Feature: Event Calendar
     And I fill in the event details correctly
     Then I should see the group event on the Calendar page
 
-  @DITA-40
+  @DITA-40 @wip
   Scenario: Entering incorrect group event details
     Given I am logged in as user
     When I am on the course event page
