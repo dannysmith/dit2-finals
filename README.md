@@ -18,6 +18,8 @@ On windows you should install Ruby193 (32-bit version) and DevKit.
 
 On OSX/Unix/windows, is should just be a case of checking out the repository and running `bundle install`.
 
+Comprehensive installation guide can be found at goo.gl/KdFLhZ
+
 ### Cucumber Tests
 There's only one build step, which executes the following commands:
 
