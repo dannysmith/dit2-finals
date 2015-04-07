@@ -45,7 +45,7 @@ COURSE_DETAILS = {
 
 COURSE_ID = {}
 
-Given(/^I am logged in as (.+)$/) do |account|
+Given(/^I am logged in as (admin|teacher|grouped student|enrolled student|student)$/) do |account|
   @app.login.visit
   if account == 'admin'
     @app.login.admin_login
