@@ -31,12 +31,14 @@ COURSE_DETAILS = {
 
 COURSE_ID = {}
 
-Given(/^I am logged in as (admin|user)$/) do |account|
+Given(/^I am logged in as (.+)$/) do |account|
   @app.login.visit
   if account == 'admin'
     @app.login.admin_login
-  elsif account == 'user'
+  elsif account == 'teacher'
     @app.login.login USER_DETAILS[:user2][:username], USER_DETAILS[:user2][:password]
+  elsif account == 'student'
+    @app.login.login USER_DETAILS[:user1][:username], USER_DETAILS[:user1][:password]
   end
 end
 
