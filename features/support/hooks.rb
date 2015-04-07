@@ -57,7 +57,7 @@ def user_setup(user_details)
     @app.tp_email.visit
     @app.tp_email.account(user[:email][/([^@]+)/])
     @app.tp_email.first_li.click
-    sleep(3)
+    sleep(10)
     @browser.goto @app.tp_email.email_body.text[/http.+#{user[:username]}/]
     @app.logout
     @app.signup.visit
@@ -82,7 +82,7 @@ def course_setup(course_details)
 end
 
 def setup_enrollment(enroll_user, enroll_type, course)
-  @browser.goto 'http://unix.spartaglobal.com/moodle/course/management.php?categoryid=1'
+  @browser.goto EnvConfig.course_manage_url
   @browser.a(text: course[:fullname]).click
   @browser.a(text: "Enrolled users").click
   @browser.button(value: "Enrol users").click
@@ -99,9 +99,9 @@ end
 def delete_users(user_details)
   @app.login.visit
   @app.login.admin_login
-  @browser.goto 'http://unix.spartaglobal.com/moodle/admin/user/user_bulk.php'
+  @browser.goto EnvConfig.modify_users_url
   user_details.each do |key, users|
-    @browser.option(text: /^#{users[:firstname]} #{users[:lastname]}$/).select
+    @browser.option(text: users[:firstname] + ' ' + users[:lastname]).select
   end
   @browser.input(value: "Add to selection").click
   @browser.option(text: "Delete").select
@@ -113,7 +113,7 @@ end
 def delete_courses(course_details)
   @app.login.visit
   @app.login.admin_login
-  @browser.goto 'http://unix.spartaglobal.com/moodle/course/management.php?categoryid=1'
+  @browser.goto EnvConfig.course_manage_url
   course_details.each do |key, course_name|
     @browser.as(class: "coursename").each_with_index do |courses, i|
       if courses.text == course_name[:fullname]
@@ -179,7 +179,7 @@ Before ('@DITA6_setup') do
       break
     end
   end
-  @browser.goto 'http://unix.spartaglobal.com/moodle/course/management.php?categoryid=1'
+  @browser.goto EnvConfig.course_manage_url
   @browser.a(text: COURSE_NAME).click
   @browser.a(text: "Enrolled users").click
   @browser.button(value: "Enrol users").click
