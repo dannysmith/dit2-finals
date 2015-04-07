@@ -56,7 +56,7 @@ Feature: Event Calendar
     And I fill in the event details incorrectly
     Then I should be prompted with an error message
 
-  @DITA-41 @wip
+  @DITA-41
   Scenario: Successfully creating the course event
     Given I am logged in as teacher
     When I am on the course event page
@@ -72,12 +72,12 @@ Feature: Event Calendar
     And I fill in the event details incorrectly
     Then I should be prompted with an error message
 
-  @DITA-43 @wip
+  @DITA-43
   Scenario: Successfully viewing the course event
     Given I am logged in as enrolled student
     Then I should see the course event on the Calendar page
 
-  @DITA-43 @wip
+  @event_teardown @DITA-43
   Scenario: Only enrolled students should see course events
     Given I am logged in as student
     Then I should not see the course event on the Calendar page
