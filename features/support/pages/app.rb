@@ -60,6 +60,22 @@ class App
     CourseApprovedPage.new @browser
   end
 
+  def group
+    GroupPage.new @browser
+  end
+
+  def my_course
+    MyCoursePage.new @browser
+  end
+
+  def create_group
+    CreateGroupPage.new @browser
+  end
+
+  def create_member
+    CreateMemberPage.new @browser
+  end
+
   def logout
     @browser.goto EnvConfig.logout_url
     @browser.input(value: 'Continue').click

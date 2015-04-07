@@ -20,14 +20,11 @@ class ThirdPartyEmail < GenericPage
     @browser.span(id:"inbox-id").click    
     @browser.span(id:"inbox-id").text_field.set account[/([^@]+)/]
     @browser.button(class: "save button small").click
-    sleep(3)
   end
 
   def first_li
-    AsyncSupport.eventually{
-      @browser.tr(class: 'email_unread').td(class:'td2').text == 'admin@spartaglobal.com'
-      @browser.tr(class: 'email_unread').td(class:'td3').span.text == 'A new account has been requested at \'Spartiaite LMS\' using your email address.'
-    }
+    sleep(10)
+    AsyncSupport.eventually{@browser.tr(class: 'email_unread').td(class:'td2').text == 'admin@spartaglobal.com'}
     @browser.tr
   end
 

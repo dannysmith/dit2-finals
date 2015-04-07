@@ -21,48 +21,26 @@ Before do
   end
 end
 
-Before('@user_setup') do
-  unless $user_setup_hook
-    @app.signup.visit
-    @app.signup.fill_correct 0
-    @app.signup.submit.click
-
-    @app.tp_email.visit
-    @app.tp_email.account @app.signup.correct_users[0]["email"][/([^@]+)/]
-    @app.tp_email.first_li.click
-    sleep(3)
-    @browser.goto @app.tp_email.email_body.text[/http.+#{@app.signup.correct_users[0]["username"]}/]
-    @app.logout
-    $user_setup_hook = true
-  end
-end
-
 # Registering 2 users
 # Enrolling 1 user
 # 1 user shall create a course
 Before ('@user_register_enrollment') do
-  unless $multiple_users_setup_hook
+  unless $user_register_enrollment_hook
     user_setup(USER_DETAILS)
     @app.login.visit
     @app.login.login USER_DETAILS[:user2][:username], USER_DETAILS[:user2][:password]
     course_setup(COURSE_DETAILS)
-    binding.pry
     @app.login.visit
     @app.login.admin_login
-    binding.pry
     setup_enrollment((USER_DETAILS[:user1][:firstname])+' '+(USER_DETAILS[:user1][:lastname]), 'Student', COURSE_DETAILS[:course1])
-    binding.pry
-    $multiple_users_setup_hook= true
+    $user_register_enrollment_hook = true
   end
 end
 
-Before ('@user_course_setup') do
-  unless $user_course_setup
-    user_setup(USER_DETAILS)
-    @app.login.visit
-    @app.login.login USER_DETAILS[:user2][:username], USER_DETAILS[:user2][:password]
+Before ('@setup course') do
+  unless $multiple_users_setup_hook
     course_setup(COURSE_DETAILS)
-    $user_course_setup = true
+    $multiple_users_setup_hook = true
   end
 end
 
@@ -104,7 +82,7 @@ def course_setup(course_details)
 end
 
 def setup_enrollment(enroll_user, enroll_type, course)
-  @browser.goto 'http://unix.spartaglobal.com/moodle/course/management.php?categoryid=1'
+  @browser.goto EnvConfig.course_manage_url
   @browser.a(text: course[:fullname]).click
   @browser.a(text: "Enrolled users").click
   @browser.button(value: "Enrol users").click
@@ -116,6 +94,59 @@ def setup_enrollment(enroll_user, enroll_type, course)
     end
   end
   @app.logout
+end
+
+def delete_users(user_details)
+  @app.login.visit
+  @app.login.admin_login
+  @browser.goto EnvConfig.modify_users_url
+  user_details.each do |_key, users|
+    @browser.option(text: users[:firstname] + ' ' + users[:lastname]).select
+  end
+  @browser.input(value: "Add to selection").click
+  @browser.option(text: "Delete").select
+  @browser.input(value: "Go").click
+  @browser.input(value: "Yes").click
+  @app.logout
+end
+
+def delete_courses(course_details)
+  @app.login.visit
+  @app.login.admin_login
+  @browser.goto EnvConfig.course_manage_url
+  course_details.each do |_key, course_name|
+    @browser.as(class: "coursename").each_with_index do |courses, i|
+      if courses.text == course_name[:fullname]
+        @browser.imgs(alt: 'Delete')[i].click
+        @browser.input(value: 'Continue').click
+        break
+      end
+    end
+  end
+  @app.logout
+end
+
+def delete_courses_ID(course_IDs)
+  @app.login.visit
+  @app.login.admin_login
+  @browser.goto 'http://unix.spartaglobal.com/moodle/course/management.php?categoryid=1'
+  course_IDs.each do |key, course_id|
+    @browser.goto "http://unix.spartaglobal.com/moodle/course/delete.php?id=#{course_id}"
+    @browser.button(value: 'Continue').click
+  end
+  @app.logout
+end
+
+
+
+Before ('@user_course_setup') do
+  unless $user_course_setup
+    user_setup(USER_DETAILS)
+    @app.login.visit
+    @app.login.login USER_DETAILS[:user2][:username], USER_DETAILS[:user2][:password]
+    course_setup(COURSE_DETAILS)
+    $user_course_setup = true
+  end
 end
 
 Before ('@DITA6_setup') do
@@ -155,7 +186,8 @@ end
 After ('@course_teardown') do
   @app.login.visit
   @app.login.admin_login
-  @browser.goto EnvConfig.course_manage_url
+
+  @browser.goto EnvConfig.course_manage_url 
   @browser.as(class: 'coursename').each_with_index do |course, i|
     if course.text == 'Maths'
       @browser.imgs(alt: 'Delete')[i].click
@@ -163,6 +195,17 @@ After ('@course_teardown') do
       break
     end
   end
+  @browser.goto EnvConfig.modify_users_url
+  if (NUM_OF_USERS == 2)
+    @browser.option(text:(FIRSTNAME2)+' '+(LASTNAME2)).select
+    @browser.button(id:'id_addsel').click
+  end
+  @browser.option(text:(FIRSTNAME1)+' '+(LASTNAME1)).select
+  @browser.button(id:'id_addsel').click
+  @browser.option(text:'Delete').select
+  @browser.button(id:'id_doaction').click
+  @browser.button(value:'Yes').click
+  @browser.button(value:'Continue').click    
 end
 
 After ('@event_teardown') do
@@ -236,17 +279,40 @@ at_exit do
   @browser = browser
   @app = App.new @browser
 
-  if $user_setup_hook
-    @app.login.visit
-    @app.login.admin_login
-    @browser.goto EnvConfig.modify_users_url 
-    name = EnvConfig.data['Correct'][0]["firstname"]+" "+EnvConfig.data['Correct'][0]["lastname"]
-    @browser.option(text:name).select
-    @browser.button(id:'id_addsel').click
+  # if $user_setup_hook
+  #   @app.login.visit
+  #   @app.login.admin_login
+  #   @browser.goto EnvConfig.modify_users_url 
+  #   name = EnvConfig.data['Correct'][0]["firstname"]+" "+EnvConfig.data['Correct'][0]["lastname"]
+  #   @browser.option(text:name).select
+  #   @browser.button(id:'id_addsel').click
 
-    @browser.option(text:'Delete').select
-    @browser.button(id:'id_doaction').click
-    @browser.button(value:'Yes').click
+  #   @browser.option(text:'Delete').select
+  #   @browser.button(id:'id_doaction').click
+  #   @browser.button(value:'Yes').click
+  # end
+
+  if $user_course_setup
+    # @app.login.visit
+    # @app.login.admin_login
+    # @browser.goto "http://unix.spartaglobal.com/moodle/course/delete.php?id=#{COURSE_ID[(COURSE_DETAILS[:course1][:fullname]).to_sym]}"
+    # @browser.button(value: 'Continue').click
+    # @browser.goto "http://unix.spartaglobal.com/moodle/course/delete.php?id=#{COURSE_ID[(COURSE_DETAILS[:course2][:fullname]).to_sym]}"
+    # @browser.button(value: 'Continue').click
+    delete_users(USER_DETAILS)
+    delete_courses_ID(COURSE_ID)
+    # @browser.goto 'http://unix.spartaglobal.com/moodle/admin/user/user_bulk.php'
+    # @browser.option(text: (USER_DETAILS[:user1][:firstname]+" "+USER_DETAILS[:user1][:lastname])).select
+    # @browser.option(text: (USER_DETAILS[:user2][:firstname]+" "+USER_DETAILS[:user2][:lastname])).select
+    # @browser.button(id: 'id_addsel').click
+    # @browser.option(text:'Delete').select
+    # @browser.button(id:'id_doaction').click
+    # @browser.button(value:'Yes').click
+  end
+
+  if $user_register_enrollment_hook
+    delete_courses_ID(COURSE_ID)
+    delete_users(USER_DETAILS)
   end
 
   browser.close
