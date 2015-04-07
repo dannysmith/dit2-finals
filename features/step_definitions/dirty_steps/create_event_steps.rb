@@ -5,10 +5,10 @@ EVENT_DETAILS = {
 
 USER_DETAILS = {
   user1: {
-    username: 'njewootahdita40',
+    username: 'nininidita40',
     password: 'Jewootah1!',
-    email: 'ninidita40@sharklasers.com',
-    firstname: 'Nini',
+    email: 'neermaldita40@sharklasers.com',
+    firstname: 'Neermal',
     lastname: 'DITA40'
   },
   user2: {
@@ -64,7 +64,7 @@ When(/^I am on the (.+) event page$/) do |type|
   if type == 'new'
     @app.new_event.visit
   elsif type == 'course'
-    @app.new_event.visit_with "340"#COURSE_ID[(COURSE_DETAILS[:course1][:fullname]).to_sym]
+    @app.new_event.visit_with COURSE_ID[(COURSE_DETAILS[:course1][:fullname]).to_sym]
   end
 end
 
