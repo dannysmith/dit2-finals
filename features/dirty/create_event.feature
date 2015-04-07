@@ -43,12 +43,10 @@ Feature: Event Calendar
     And I fill in the event details correctly
     Then I should see the group event on the Calendar page
 
-  @DITA-40
-  Scenario: Entering incorrect user group details
+  @DITA-40 @wip
+  Scenario: Entering incorrect group event details
     Given I am logged in as user
-    And a group exists
     When I am on the course event page
     And I set the type of event to Group
     And I fill in the event details incorrectly
     Then I should be prompted with an error message
-
