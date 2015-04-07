@@ -21,18 +21,18 @@ Before do
   end
 end
 
-# Registering 2 users
-# Enrolling 1 user
+# Registering 4 users
+# Enrolling 2 users
 # 1 user shall create a course
 Before ('@user_register_enrollment') do
   unless $user_register_enrollment_hook
     user_setup(USER_DETAILS)
-    @app.login.visit
-    @app.login.login USER_DETAILS[:user2][:username], USER_DETAILS[:user2][:password]
+    login USER_DETAILS[:user2][:username], USER_DETAILS[:user2][:password]
     course_setup(COURSE_DETAILS)
-    @app.login.visit
-    @app.login.admin_login
+    admin_login
     setup_enrollment((USER_DETAILS[:user1][:firstname])+' '+(USER_DETAILS[:user1][:lastname]), 'Student', COURSE_DETAILS[:course1])
+    admin_login
+    setup_enrollment((USER_DETAILS[:user3][:firstname])+' '+(USER_DETAILS[:user3][:lastname]), 'Student', COURSE_DETAILS[:course1])
     $user_register_enrollment_hook = true
   end
 end
@@ -42,6 +42,16 @@ Before ('@setup course') do
     course_setup(COURSE_DETAILS)
     $multiple_users_setup_hook = true
   end
+end
+
+def login(username, password)
+  @app.login.visit
+  @app.login.login username, password
+end
+
+def admin_login
+  @app.login.visit
+  @app.login.admin_login
 end
 
 def user_setup(user_details)
