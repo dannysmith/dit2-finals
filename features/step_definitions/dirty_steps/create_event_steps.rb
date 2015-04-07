@@ -44,7 +44,7 @@ When(/^I am on the (.+) event page$/) do |type|
   if type == 'new'
     @app.new_event.visit
   elsif type == 'course'
-    @app.new_event.visit COURSE_ID[(COURSE_DETAILS[:course1][:fullname]).to_sym]
+    @app.new_event.visit_with COURSE_ID[(COURSE_DETAILS[:course1][:fullname]).to_sym]
   end
 end
 
