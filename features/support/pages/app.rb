@@ -63,16 +63,12 @@ class App
     GroupPage.new @browser
   end
 
-  def course_details
-    CourseDetailsPage.new @browser
-  end
-
   def my_course
     MyCoursePage.new @browser
   end
 
-  def manage_group
-    ManageGroupPage.new @browser
+  def create_group
+    CreateGroupPage.new @browser
   end
 
   def create_member
