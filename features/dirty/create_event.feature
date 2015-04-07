@@ -18,9 +18,14 @@ Feature: Event Calendar
     And I fill in the event details incorrectly
     Then I should be prompted with an error message
 
+  @DITA-42 @wip
+  Scenario: Successfully viewing the global event
+    Given I am logged in as student
+    Then I should see the global event on the Calendar page
+
   @DITA-39
   Scenario: Successfully creating the user event
-    Given I am logged in as user
+    Given I am logged in as teacher
     When I am on the new event page
     And I set the type of event to User
     And I fill in the event details correctly
@@ -28,7 +33,7 @@ Feature: Event Calendar
 
   @DITA-39
   Scenario: Entering incorrect user event details
-    Given I am logged in as user
+    Given I am logged in as teacher
     When I am on the new event page
     And I set the type of event to User
     And I fill in the event details incorrectly
@@ -36,7 +41,7 @@ Feature: Event Calendar
 
   @DITA-40
   Scenario: Successfully creating the group event
-    Given I am logged in as user
+    Given I am logged in as teacher
     And a group exists
     When I am on the course event page
     And I set the type of event to Group
@@ -45,7 +50,7 @@ Feature: Event Calendar
 
   @DITA-40
   Scenario: Entering incorrect group event details
-    Given I am logged in as user
+    Given I am logged in as teacher
     When I am on the course event page
     And I set the type of event to Group
     And I fill in the event details incorrectly
@@ -53,7 +58,7 @@ Feature: Event Calendar
 
   @DITA-41
   Scenario: Successfully creating the course event
-    Given I am logged in as user
+    Given I am logged in as teacher
     When I am on the course event page
     And I set the type of event to Course
     And I fill in the event details correctly
@@ -61,7 +66,7 @@ Feature: Event Calendar
 
   @DITA-41
   Scenario: Entering incorrect course event details
-    Given I am logged in as user
+    Given I am logged in as teacher
     When I am on the course event page
     And I set the type of event to Course
     And I fill in the event details incorrectly
