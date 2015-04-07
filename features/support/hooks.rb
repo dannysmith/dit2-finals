@@ -33,14 +33,14 @@ Before ('@user_register_enrollment') do
     @app.login.visit
     @app.login.admin_login
     setup_enrollment((USER_DETAILS[:user1][:firstname])+' '+(USER_DETAILS[:user1][:lastname]), 'Student', COURSE_DETAILS[:course1])
-    $user_register_enrollment_hook= true
+    $user_register_enrollment_hook = true
   end
 end
 
 Before ('@setup course') do
   unless $multiple_users_setup_hook
     course_setup(COURSE_DETAILS)
-    $multiple_users_setup_hook= true
+    $multiple_users_setup_hook = true
   end
 end
 
@@ -80,23 +80,6 @@ def course_setup(course_details)
   end
   @app.logout
 end
-
-# Teacher account MUST exist
-# def course_setup(course_details)
-#   @app.course_request_page.visit
-#   course_details.each do |_key, course|
-#     @app.course_request_page.fill_form fullname: course[:fullname], shortname: course[:shortname], summary: course[:summary], reason: course[:reason]
-#     @app.course_request_page.visit
-#   end
-#   @app.logout
-#   @app.login.visit
-#   @app.login.admin_login
-#   course_details.each do |_key, course|
-#     @app.course_pending.visit
-#     @app.course_pending.approve course[:fullname]
-#   end
-#   @app.logout
-# end
 
 def setup_enrollment(enroll_user, enroll_type, course)
   @browser.goto EnvConfig.course_manage_url
@@ -154,92 +137,7 @@ def delete_courses_ID(course_IDs)
   @app.logout
 end
 
-Before ('@DITA6_setup') do
-  # @app.login.visit
-  # @app.login.admin_login
 
-  @app.signup.visit
-  @app.signup.username.set USERNAME1
-  @app.signup.password.set PASSWORD1
-  @app.signup.email.set EMAIL1
-  @app.signup.email2.set EMAIL21
-  @app.signup.firstname.set FIRSTNAME1
-  @app.signup.lastname.set LASTNAME1
-  @app.signup.submit.click
-
-  if (NUM_OF_USERS == 2)
-    @app.signup.visit
-    @app.signup.username.set USERNAME2
-    @app.signup.password.set PASSWORD2
-    @app.signup.email.set EMAIL2
-    @app.signup.email2.set EMAIL22
-    @app.signup.firstname.set FIRSTNAME2
-    @app.signup.lastname.set LASTNAME2
-    @app.signup.submit.click
-  end
-  
-  if (NUM_OF_USERS == 2)
-    @app.tp_email.visit
-    @app.tp_email.account (EMAIL2)[/([^@]+)/]
-    sleep(3)
-    @app.tp_email.first_li.click
-    sleep(3)
-    @browser.goto @app.tp_email.email_body.text[/http.+#{USERNAME2}/]
-  end
-
-  @app.tp_email.visit
-  @app.tp_email.account (EMAIL1)[/([^@]+)/]
-  sleep(3)
-  @app.tp_email.first_li.click
-  sleep(3)
-  @browser.goto @app.tp_email.email_body.text[/http.+#{USERNAME1}/]
-
-  @app.course_request_page.visit 
-  @app.course_request_page.fill_form fullname: COURSE_NAME, shortname: SHORTNAME, summary: SUMMARY, reason: REASON
-  @browser.a(title:(FIRSTNAME1)+' '+(LASTNAME1)).click
-  @browser.a(title:'Log out').click
-  @app.login.visit
-  @app.login.admin_login
-  @browser.goto 'http://unix.spartaglobal.com/moodle/course/pending.php'
-  @browser.tbody.trs.each do |row|
-    if row.tds[1].text == COURSE_NAME
-      row.input(value: 'Approve').click
-      break
-    end
-  end
-  @browser.goto EnvConfig.course_manage_url
-  @browser.a(text: COURSE_NAME).click
-  @browser.a(text: "Enrolled users").click
-  @browser.button(value: "Enrol users").click
-  @browser.select_list(id:"id_enrol_manual_assignable_roles").select("Teacher")
-  @browser.divs(class: 'users').each do |div|
-    if div.div(class: 'fullname').text == (FIRSTNAME1)+' '+(LASTNAME1)
-      div.button(class: 'enroll').click
-      break
-    end
-  end
-  @browser.a(title:'Admin User').click
-  @browser.a(title:'Log out').click
-end
-
-# Registering 2 users
-# Enrolling 1 user
-# 1 user shall create a course
-Before ('@user_register_enrollment') do
-  unless $multiple_users_setup_hook
-    user_setup(USER_DETAILS)
-    @app.login.visit
-    @app.login.login USER_DETAILS[:user2][:username], USER_DETAILS[:user2][:password]
-    course_setup(COURSE_DETAILS)
-    binding.pry
-    @app.login.visit
-    @app.login.admin_login
-    binding.pry
-    setup_enrollment((USER_DETAILS[:user1][:firstname])+' '+(USER_DETAILS[:user1][:lastname]), 'Student', COURSE_DETAILS[:course1])
-    binding.pry
-    $multiple_users_setup_hook= true
-  end
-end
 
 Before ('@user_course_setup') do
   unless $user_course_setup

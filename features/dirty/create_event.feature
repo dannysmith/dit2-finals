@@ -10,7 +10,7 @@ Feature: Event Calendar
     And I fill in the event details correctly
     Then I should see the global event on the Calendar page
 
-  @DITA-38
+  @DITA-38 @wip
   Scenario: Entering incorrect global event details
     Given I am logged in as admin
     When I am on the new event page
@@ -18,7 +18,7 @@ Feature: Event Calendar
     And I fill in the event details incorrectly
     Then I should be prompted with an error message
 
-  @DITA-39
+  @DITA-39 @wip
   Scenario: Successfully creating the user event
     Given I am logged in as user
     When I am on the new event page
@@ -26,7 +26,7 @@ Feature: Event Calendar
     And I fill in the event details correctly
     Then I should see the user event on the Calendar page
 
-  @DITA-39
+  @DITA-39 @wip
   Scenario: Entering incorrect user event details
     Given I am logged in as user
     When I am on the new event page
