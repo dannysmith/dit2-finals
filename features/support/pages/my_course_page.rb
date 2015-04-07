@@ -1,9 +1,10 @@
 class MyCoursePage < GenericPage
   def visit
-    @browser.goto "http://unix.spartaglobal.com/moodle/my/"
+    @browser.goto EnvConfig.my_course_url
   end
 
-  def select_course(fullname)
-    @browser.a(title: fullname).click
+  def get_course_id(fullname)
+    url = @browser.a(title: fullname).attribute_value("href")
+    return url[/\d+/]
   end
 end
