@@ -6,4 +6,8 @@ class CalendarPage < GenericPage
   def find_event(event_name)
     @browser.a(text: event_name).click
   end
+
+  def check_exist(event_name)
+    @browser.a(text: event_name).exists?
+  end
 end
