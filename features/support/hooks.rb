@@ -147,7 +147,18 @@ def delete_courses_ID(course_IDs)
   @app.logout
 end
 
-
+def event_teardown()
+  @app.calendar.visit
+  @app.calendar.find_event EVENT_DETAILS[:event_name]
+  @browser.div(class: 'name').wait_until_present
+  @browser.divs(class: 'name').each_with_index do |event, i|
+    if event.text == EVENT_DETAILS[:event_name]
+      @browser.imgs(alt: 'Delete event')[i].click
+      @browser.input(value: 'Delete').click
+      break
+    end
+  end
+end
 
 Before ('@user_course_setup') do
   unless $user_course_setup
@@ -218,6 +229,7 @@ After ('@course_teardown') do
   @browser.button(value:'Continue').click    
 end
 
+# NO LONGER USED FOR EVENTS FEATURE
 After ('@event_teardown') do
   @app.login.visit
   @app.login.admin_login
@@ -231,6 +243,18 @@ After ('@event_teardown') do
       break
     end
   end
+end
+
+#  USED FOR ADMIN TEARDOWN (DITA-38)
+After ('@admin_event_teardown') do
+  admin_login
+  event_teardown
+end
+
+#  USED FOR TEACHER TEARDOWN (DITA-39/DITA-40/DITA-41)
+After ('@teacher_event_teardown') do
+  login USER_DETAILS[:user2][:username], USER_DETAILS[:user2][:password]
+  event_teardown
 end
 
 After ('@new_user_teardown') do
