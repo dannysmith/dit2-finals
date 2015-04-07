@@ -41,12 +41,12 @@ Before ('@setup course') do
   unless $multiple_users_setup_hook
     course_setup(COURSE_DETAILS)
     $multiple_users_setup_hook= true
-    end
   end
+end
 
 def user_setup(user_details)
   @app.signup.visit
-  user_details.each do |key, user|
+  user_details.each do |_key, user|
     @app.signup.username = user[:username]
     @app.signup.password = user[:password]
     @app.signup.email = user[:email]
@@ -67,14 +67,14 @@ end
 # Teacher account MUST exist
 def course_setup(course_details)
   @app.course_request_page.visit
-  course_details.each do |key, course|
+  course_details.each do |_key, course|
     @app.course_request_page.fill_form fullname: course[:fullname], shortname: course[:shortname], summary: course[:summary], reason: course[:reason]
     @app.course_request_page.visit
   end
   @app.logout
   @app.login.visit
   @app.login.admin_login
-  course_details.each do |key, course|
+  course_details.each do |_key, course|
     @app.course_pending.visit
     @app.course_pending.approve course[:fullname]
   end
@@ -100,7 +100,7 @@ def delete_users(user_details)
   @app.login.visit
   @app.login.admin_login
   @browser.goto EnvConfig.modify_users_url
-  user_details.each do |key, users|
+  user_details.each do |_key, users|
     @browser.option(text: users[:firstname] + ' ' + users[:lastname]).select
   end
   @browser.input(value: "Add to selection").click
@@ -114,7 +114,7 @@ def delete_courses(course_details)
   @app.login.visit
   @app.login.admin_login
   @browser.goto EnvConfig.course_manage_url
-  course_details.each do |key, course_name|
+  course_details.each do |_key, course_name|
     @browser.as(class: "coursename").each_with_index do |courses, i|
       if courses.text == course_name[:fullname]
         @browser.imgs(alt: 'Delete')[i].click
@@ -127,8 +127,8 @@ def delete_courses(course_details)
 end
 
 Before ('@DITA6_setup') do
-  #@app.login.visit
-  #@app.login.admin_login
+  # @app.login.visit
+  # @app.login.admin_login
 
   @app.signup.visit
   @app.signup.username.set USERNAME1
