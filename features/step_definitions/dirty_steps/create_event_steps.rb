@@ -42,9 +42,7 @@ When(/^I am on the (.+) event page$/) do |type|
   if type == 'new'
     @app.new_event.visit
   elsif type == 'course'
-    @app.my_course.visit
-    @app.my_course.select_course COURSE_DETAILS[:course1][:fullname]
-    @app.course_details.select_new_event
+    @app.new_event.visit COURSE_ID
   end
 end
 
@@ -72,12 +70,11 @@ end
 
 Given(/^a group exists$/) do
   @app.my_course.visit
-  binding.pry
-  @app.my_course.select_course COURSE_DETAILS[:course1][:fullname]
-  binding.pry
-  @app.course_details.select_group
-  @app.group.select_create_group
-  @app.manage_group.submit_group_name "Test Group"
+  COURSE_ID = @app.my_course.get_course_id COURSE_DETAILS[:course1][:fullname]
+  @app.create_group.visit COURSE_ID
+  @app.create_group.submit_form "Test Group"
   @app.group.select_add_members
-  @app.create_member.add_members USER_DETAILS[:user1][:firstname], USER_DETAILS[:user2][:firstname]
+  @app.create_member.submit_form USER_DETAILS[:user1][:firstname], USER_DETAILS[:user2][:firstname]
+
+  # DELETE COURSE DETAILS (GOES TO USERS THEN GROUPS)
 end
