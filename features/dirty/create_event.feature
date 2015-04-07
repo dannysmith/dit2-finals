@@ -51,7 +51,7 @@ Feature: Event Calendar
     And I fill in the event details incorrectly
     Then I should be prompted with an error message
 
-  @DITA-41 @wip
+  @DITA-41
   Scenario: Successfully creating the course event
     Given I am logged in as user
     When I am on the course event page
@@ -59,7 +59,7 @@ Feature: Event Calendar
     And I fill in the event details correctly
     Then I should see the course event on the Calendar page
 
-  @DITA-41 @wip
+  @DITA-41
   Scenario: Entering incorrect course event details
     Given I am logged in as user
     When I am on the course event page
