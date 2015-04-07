@@ -17,6 +17,20 @@ USER_DETAILS = {
     email: 'rtwenadita40@sharklasers.com',
     firstname: 'Richard',
     lastname: 'DITA40'
+  },
+  user3: {
+    username: 'modita40',
+    password: 'Twenaaa1!',
+    email: 'modita40@sharklasers.com',
+    firstname: 'Mo',
+    lastname: 'DITA40'
+  },
+  user4: {
+    username: 'ericdita40',
+    password: 'Twenaaa1!',
+    email: 'ericdita40@sharklasers.com',
+    firstname: 'Eric',
+    lastname: 'DITA40'
   }
 }
 
@@ -35,10 +49,14 @@ Given(/^I am logged in as (.+)$/) do |account|
   @app.login.visit
   if account == 'admin'
     @app.login.admin_login
+  elsif account == 'grouped student'
+    @app.login.login USER_DETAILS[:user1][:username], USER_DETAILS[:user1][:password]
   elsif account == 'teacher'
     @app.login.login USER_DETAILS[:user2][:username], USER_DETAILS[:user2][:password]
+  elsif account == 'enrolled student'
+    @app.login.login USER_DETAILS[:user3][:username], USER_DETAILS[:user3][:password]
   elsif account == 'student'
-    @app.login.login USER_DETAILS[:user1][:username], USER_DETAILS[:user1][:password]
+    @app.login.login USER_DETAILS[:user4][:username], USER_DETAILS[:user4][:password]
   end
 end
 
@@ -46,7 +64,7 @@ When(/^I am on the (.+) event page$/) do |type|
   if type == 'new'
     @app.new_event.visit
   elsif type == 'course'
-    @app.new_event.visit_with COURSE_ID[(COURSE_DETAILS[:course1][:fullname]).to_sym]
+    @app.new_event.visit_with "340"#COURSE_ID[(COURSE_DETAILS[:course1][:fullname]).to_sym]
   end
 end
 
@@ -77,4 +95,9 @@ Given(/^a group exists$/) do
   @app.create_group.submit_form "Test Group"
   @app.group.select_add_members
   @app.create_member.submit_form USER_DETAILS[:user1][:firstname], USER_DETAILS[:user2][:firstname]
+end
+
+Then(/^I should not see the (?:.+) event on the Calendar page$/) do
+  @app.calendar.visit
+  @app.calendar.check_exist(EVENT_DETAILS[:event_name]) == false
 end
