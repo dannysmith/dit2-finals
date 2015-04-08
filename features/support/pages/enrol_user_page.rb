@@ -11,7 +11,7 @@ class CourseEnrolPage < GenericPage
   }
 
   def visit(id)
-    @browser.goto 'http://unix.spartaglobal.com/moodle/enrol/users.php?id=' + id
+    @browser.goto EnvConfig.base_url + EnvConfig.course_enrol + id
   end
 
   def enrol_users_button

@@ -23,7 +23,7 @@ class CourseRequestPage < GenericPage
   }
 
   def visit
-    @browser.goto EnvConfig.course_request_url
+    @browser.goto EnvConfig.base_url + EnvConfig.course_request_url
   end
 
   def fill_form(course_details = {})

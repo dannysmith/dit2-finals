@@ -4,7 +4,7 @@ class CourseSearchPage < GenericPage
   }
 
   def visit(search_term)
-    @browser.goto EnvConfig.course_search_url + "?search=#{search_term}"
+    @browser.goto EnvConfig.base_url + EnvConfig.course_search_url + search_term
   end
 
   def check_results(search_term)

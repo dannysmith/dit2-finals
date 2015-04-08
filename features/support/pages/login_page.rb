@@ -12,7 +12,7 @@ class LoginPage < GenericPage
   }
 
   def visit
-    @browser.goto EnvConfig.login_url
+    @browser.goto EnvConfig.base_url + EnvConfig.login_url
   end
 
   def login(username, password)

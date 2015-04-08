@@ -16,12 +16,6 @@ class ThirdPartyEmail < GenericPage
     @browser.button(ELEMENT[:email_confirm]).click
   end
 
-  def account (account)
-    @browser.span(id:"inbox-id").click    
-    @browser.span(id:"inbox-id").text_field.set account[/([^@]+)/]
-    @browser.button(class: "save button small").click
-  end
-
   def first_li
     sleep(10)
     AsyncSupport.eventually{@browser.tr(class: 'email_unread').td(class:'td2').text == 'admin@spartaglobal.com'}

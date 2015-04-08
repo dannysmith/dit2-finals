@@ -4,7 +4,7 @@ class CoursePendingPage < GenericPage
   }
 
   def visit
-    @browser.goto EnvConfig.course_pending_url
+    @browser.goto EnvConfig.base_url + EnvConfig.course_pending_url
   end
 
   def approve(course_name)

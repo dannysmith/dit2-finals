@@ -1,6 +1,6 @@
 class CalendarPage < GenericPage
   def visit
-    @browser.goto EnvConfig.calendar_url
+    @browser.goto EnvConfig.base_url + EnvConfig.calendar_url
   end
 
   def find_event(event_name)
