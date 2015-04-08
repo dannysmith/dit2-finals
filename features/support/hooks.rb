@@ -24,16 +24,16 @@ end
 # Registering 4 users
 # Enrolling 2 users
 # 1 user shall create a course
-Before ('@user_register_enrollment') do
-  unless $user_register_enrollment_hook
-    user_setup(USER_DETAILS)
-    login USER_DETAILS[:user2][:username], USER_DETAILS[:user2][:password]
-    course_setup(COURSE_DETAILS)
+Before ('@create_event_feature') do
+  unless $create_event_feature_hook
+    user_setup(EVENT_USER_DETAILS)
+    login EVENT_USER_DETAILS[:user2][:username], EVENT_USER_DETAILS[:user2][:password]
+    course_setup(EVENT_COURSE_DETAILS)
     admin_login
-    setup_enrollment((USER_DETAILS[:user1][:firstname])+' '+(USER_DETAILS[:user1][:lastname]), 'Student', COURSE_DETAILS[:course1])
+    setup_enrollment((EVENT_USER_DETAILS[:user1][:firstname])+' '+(EVENT_USER_DETAILS[:user1][:lastname]), 'Student', EVENT_COURSE_DETAILS[:course1])
     admin_login
-    setup_enrollment((USER_DETAILS[:user3][:firstname])+' '+(USER_DETAILS[:user3][:lastname]), 'Student', COURSE_DETAILS[:course1])
-    $user_register_enrollment_hook = true
+    setup_enrollment((EVENT_USER_DETAILS[:user3][:firstname])+' '+(EVENT_USER_DETAILS[:user3][:lastname]), 'Student', EVENT_COURSE_DETAILS[:course1])
+    $create_event_feature_hook = true
   end
 end
 
@@ -147,12 +147,12 @@ def delete_courses_ID(course_IDs)
   @app.logout
 end
 
-def event_teardown()
+def event_teardown(event_name)
   @app.calendar.visit
-  @app.calendar.find_event EVENT_DETAILS[:event_name]
+  @app.calendar.find_event event_name
   @browser.div(class: 'name').wait_until_present
   @browser.divs(class: 'name').each_with_index do |event, i|
-    if event.text == EVENT_DETAILS[:event_name]
+    if event.text == event_name
       @browser.imgs(alt: 'Delete event')[i].click
       @browser.input(value: 'Delete').click
       break
@@ -248,13 +248,13 @@ end
 #  USED FOR ADMIN TEARDOWN (DITA-38)
 After ('@admin_event_teardown') do
   admin_login
-  event_teardown
+  event_teardown EVENT_DETAILS[:event_name]
 end
 
 #  USED FOR TEACHER TEARDOWN (DITA-39/DITA-40/DITA-41)
 After ('@teacher_event_teardown') do
-  login USER_DETAILS[:user2][:username], USER_DETAILS[:user2][:password]
-  event_teardown
+  login EVENT_USER_DETAILS[:user2][:username], EVENT_USER_DETAILS[:user2][:password]
+  event_teardown EVENT_DETAILS[:event_name]
 end
 
 After ('@new_user_teardown') do
@@ -344,9 +344,10 @@ at_exit do
     # @browser.button(value:'Yes').click
   end
 
-  if $user_register_enrollment_hook
+  # TEARDOWN FOR CREATE EVENT FEATURE
+  if $create_event_feature_hook
     delete_courses_ID(COURSE_ID)
-    delete_users(USER_DETAILS)
+    delete_users(EVENT_USER_DETAILS)
   end
 
   browser.close
