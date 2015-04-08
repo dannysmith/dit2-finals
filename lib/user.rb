@@ -6,6 +6,7 @@
 
 class User
   attr_reader :username, :password, :firstname, :lastname, :email, :id
+  attr_accessor :metaname
 
   @@users = []
 
@@ -15,7 +16,8 @@ class User
       firstname: 'User',
       lastname: "Dita #{Utilities.random_string(5).capitalize}",
       email: "#{Utilities.random_string(5)}@sharklasers.com",
-      password: "Password1!"
+      password: "Password1!",
+      tag: nil
     }
 
     # Merge details with parameters
@@ -31,6 +33,7 @@ class User
     @firstname = details[:firstname]
     @lastname = details[:lastname]
     @email = details[:email]
+    @tag = details[:tag]
 
     # Creating the user in Watir
     submit_form
@@ -64,8 +67,42 @@ class User
     @@users
   end
 
-  def self.last
-    @@users.last
+  # Return the last user, or an array of the last <number_of_users> users.
+  def self.last(number_of_users)
+    if number_of_users
+      i = number_of_users * -1
+      @@users[i..-1]
+    else
+      @@users.last
+    end
+  end
+
+  # Returns and array of User objects
+  def self.find_by_tag(tag)
+    results = []
+    @@courses.each do |course|
+      results << if course.tag == tag
+    end
+  end
+
+  def self.delete_by_tag!(tag)
+    courses = self.find_by_tag(tag)
+
+    Utilities.login_as_admin @browser
+    @browser.goto EnvConfig.base_url + EnvConfig.modify_users_url
+
+    # Loop and select all relevant courses.
+    courses.each { |course| @browser.option(value: course.id).select }
+
+    @browser.input(value: "Add to selection").click
+    @browser.option(text: "Delete").select
+    @browser.input(value: "Go").click
+    @browser.input(value: "Yes").click
+    Utilities.logout @browser
+
+    # Delete the course object from @@courses
+    courses.each { |course| @@courses.delete(course) }
+
   end
 
   private
