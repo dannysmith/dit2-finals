@@ -17,10 +17,15 @@ module Utilities
     browser.input(value: 'Continue').click
   end
 
-  def self.login_as_admin(browser)
+  def self.login(browser, username, password)
+    self.logout browser
     browser.goto(EnvConfig.base_url + EnvConfig.login_url)
-    browser.text_field(name: 'username').set EnvConfig.admin_username
-    browser.text_field(id: 'password').set EnvConfig.admin_password
+    browser.text_field(name: 'username').set username
+    browser.text_field(id: 'password').set password
     browser.form(id: 'login').button.click
+  end
+
+  def self.login_as_admin(browser)
+    self.login(browser, EnvConfig.admin_username, EnvConfig.admin_password)
   end
 end
