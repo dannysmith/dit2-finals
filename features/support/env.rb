@@ -11,6 +11,7 @@ require 'rubocop'
 require 'yaml'
 
 # Load the generic libraries in lib..
+require File.dirname(__FILE__) + '/../../lib/env_config.rb'
 Dir[File.dirname(__FILE__) + '/../../lib/*.rb'].each { |f| require f }
 
 require File.dirname(__FILE__) + '/pages/generic.rb'
@@ -21,3 +22,4 @@ World(RSpec::Matchers)
 
 
 
+binding.pry
