@@ -17,9 +17,7 @@ Dir[File.dirname(__FILE__) + '/../../lib/*.rb'].each { |f| require f }
 require File.dirname(__FILE__) + '/pages/generic.rb'
 Dir[File.dirname(__FILE__) + '/pages/*.rb'].each { |f| require f }
 
+Dir[File.dirname(__FILE__) + '/helpers/*.rb'].each { |f| require f }
+
 # Set up World
 World(RSpec::Matchers)
-
-
-
-binding.pry
