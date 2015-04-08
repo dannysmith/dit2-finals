@@ -1,10 +1,10 @@
 class NewEventPage < GenericPage
   def visit
-    @browser.goto EnvConfig.new_event_url
+    @browser.goto EnvConfig.base_url + EnvConfig.new_event_url
   end
 
   def visit_with(course_id)
-    @browser.goto EnvConfig.new_group_event_url + course_id
+    @browser.goto EnvConfig.base_url + EnvConfig.new_group_event_url + course_id
   end
 
   def event_type=(type)

@@ -18,7 +18,7 @@ class SignUpPage < GenericPage
     error_text: EnvConfig.data['Error']
   }
   def visit
-    @browser.goto EnvConfig.signup_url
+    @browser.goto EnvConfig.base_url + EnvConfig.signup_url
   end
 
   def correct_users

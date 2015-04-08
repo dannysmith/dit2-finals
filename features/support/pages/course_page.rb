@@ -6,7 +6,7 @@ class CoursePage < GenericPage
   }
 
   def visit
-    @browser.goto EnvConfig.course_page_url
+    @browser.goto EnvConfig.base_url + EnvConfig.course_page_url
   end
 
   def search_for(search_term)

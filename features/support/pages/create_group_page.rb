@@ -1,6 +1,6 @@
 class CreateGroupPage < GenericPage
   def visit(course_id)
-    @browser.goto EnvConfig.create_group_url + course_id
+    @browser.goto EnvConfig.base_url + EnvConfig.create_group_url + course_id
   end
 
   def submit_form(group_name)
