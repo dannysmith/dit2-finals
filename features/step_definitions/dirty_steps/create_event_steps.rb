@@ -3,7 +3,7 @@ EVENT_DETAILS = {
   description: 'This is a test event'
 }
 
-USER_DETAILS = {
+EVENT_USER_DETAILS = {
   user1: {
     username: 'nininidita40',
     password: 'Jewootah1!',
@@ -34,7 +34,7 @@ USER_DETAILS = {
   }
 }
 
-COURSE_DETAILS = {
+EVENT_COURSE_DETAILS = {
   course1: {
     fullname: "DITA40 DITA40",
     shortname: "DITA40",
@@ -50,13 +50,13 @@ Given(/^I am logged in as (admin|teacher|grouped student|enrolled student|studen
   if account == 'admin'
     @app.login.admin_login
   elsif account == 'grouped student'
-    @app.login.login USER_DETAILS[:user1][:username], USER_DETAILS[:user1][:password]
+    @app.login.login EVENT_USER_DETAILS[:user1][:username], EVENT_USER_DETAILS[:user1][:password]
   elsif account == 'teacher'
-    @app.login.login USER_DETAILS[:user2][:username], USER_DETAILS[:user2][:password]
+    @app.login.login EVENT_USER_DETAILS[:user2][:username], EVENT_USER_DETAILS[:user2][:password]
   elsif account == 'enrolled student'
-    @app.login.login USER_DETAILS[:user3][:username], USER_DETAILS[:user3][:password]
+    @app.login.login EVENT_USER_DETAILS[:user3][:username], EVENT_USER_DETAILS[:user3][:password]
   elsif account == 'student'
-    @app.login.login USER_DETAILS[:user4][:username], USER_DETAILS[:user4][:password]
+    @app.login.login EVENT_USER_DETAILS[:user4][:username], EVENT_USER_DETAILS[:user4][:password]
   end
 end
 
@@ -64,7 +64,7 @@ When(/^I am on the (.+) event page$/) do |type|
   if type == 'new'
     @app.new_event.visit
   elsif type == 'course'
-    @app.new_event.visit_with COURSE_ID[(COURSE_DETAILS[:course1][:fullname]).to_sym]
+    @app.new_event.visit_with COURSE_ID[(EVENT_COURSE_DETAILS[:course1][:fullname]).to_sym]
   end
 end
 
@@ -91,10 +91,10 @@ Then(/^I should be prompted with an error message$/) do
 end
 
 Given(/^a group exists$/) do
-  @app.create_group.visit COURSE_ID[(COURSE_DETAILS[:course1][:fullname]).to_sym]
+  @app.create_group.visit COURSE_ID[(EVENT_COURSE_DETAILS[:course1][:fullname]).to_sym]
   @app.create_group.submit_form "Test Group"
   @app.group.select_add_members
-  @app.create_member.submit_form USER_DETAILS[:user1][:firstname], USER_DETAILS[:user2][:firstname]
+  @app.create_member.submit_form EVENT_USER_DETAILS[:user1][:firstname], EVENT_USER_DETAILS[:user2][:firstname]
 end
 
 Then(/^I should not see the (?:.+) event on the Calendar page$/) do
