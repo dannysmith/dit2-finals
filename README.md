@@ -364,4 +364,10 @@ Here is a list of everyone that has worked on the testframework
 | Username | Name | E-mail |
 | -------|----------|----------|
 | dannysmith | Danny Smith | dmsith@testingcircle.com |
+| edarko | Eric Darko | edarko@spartaglobal.com |
+| rtwena | Richard Twena | rtwena@spartaglobal.com |
+| njewootah | Neermal Jewootah |  njewootah@spartaglobal.com |
+| cwhittaker | Charles Whittaker | cwhittaker@spartaglobal.com |
+| mwkasso | Mohammed W Kasso | mkasso@spartaglobal.com  |
+| tdean | Tiara Dean | tdean@spartaglobal.com  |
 
