@@ -56,19 +56,6 @@ task :generate_docs, "Generate HTML Documentation from the README.html" do |t|
   system 'ruby ./bin/generate_docs_from_readme.rb'
 end
 
-# Download Features from JIRA using Behave Pro
-desc "Download features from JIRA"
-task :download do
-  Behave::FeatureDownloader.new({
-    'host'   => 'https://behave.pro',
-    'user'   => 'amlyYTo2ODBmZjM0ZC1jMDIwLTQ4ODktYTFkOS1iODM0MTRmNGYwMTY=',
-    'pass'   => 'edf8ddbb35248010204767786ab2c9686d74670b',
-    'key'    => '10804',
-    'dir'    => 'features',
-    'manual' => true
-  })
-end
-
 # Show a help message
 task :help, "Show additional flags available" do |t|
   message = <<-MESSAGE
