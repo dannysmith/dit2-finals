@@ -18,8 +18,4 @@ class GenericPage
   def url
     @browser.url
   end
-
-  def logout
-    # TODO: It seems like a sensible thing to have this available on GenericPage.
-  end
 end
