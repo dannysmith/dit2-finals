@@ -4,27 +4,27 @@ defaults: &execution_defaults
   default_config: ci #This just ensures the ci profile (below) is loaded if no CONFIG= is passed from the command line.
 
   member_login_path: login/
-
+  base_url: http://unix.spartaglobal.com/moodle
 ci:
   <<: *execution_defaults
   # URLs
-  base_url: http://unix.spartaglobal.com/moodle/
-  login_url: http://unix.spartaglobal.com/moodle/login/
-  course_request_url: http://unix.spartaglobal.com/moodle/course/request.php
-  course_page_url: http://unix.spartaglobal.com/moodle/course/index.php
-  course_pending_url: http://unix.spartaglobal.com/moodle/course/pending.php
-  course_search_url: http://unix.spartaglobal.com/moodle/course/search.php
-  course_manage_url: http://unix.spartaglobal.com/moodle/course/management.php?categoryid=1
-  logout_url: http://unix.spartaglobal.com/moodle/login/logout.php
-  signup_url: http://unix.spartaglobal.com/moodle/login/signup.php
+  login_url: /login/
+  course_approved_url: /course/edit.php?id=
+  course_request_url: /course/request.php
+  course_page_url: /course/index.php
+  course_pending_url: /course/pending.php
+  course_search_url: /course/search.php?search=
+  course_manage_url: /course/management.php?categoryid=1
+  logout_url: /login/logout.php
+  signup_url: /login/signup.php
   third_party_email_url: https://www.guerrillamail.com/inbox
-  modify_users_url: http://unix.spartaglobal.com/moodle/admin/user/user_bulk.php
-  new_event_url: http://unix.spartaglobal.com/moodle/calendar/event.php?action=new
-  calendar_url: http://unix.spartaglobal.com/moodle/calendar/view.php?view=month
-  my_course_url: http://unix.spartaglobal.com/moodle/my
-  create_group_url: http://unix.spartaglobal.com/moodle/group/group.php?courseid=
-  new_group_event_url: 'http://unix.spartaglobal.com/moodle/calendar/event.php?action=new&course='
-
+  modify_users_url: /admin/user/user_bulk.php
+  new_event_url: /calendar/event.php?action=new
+  calendar_url: /calendar/view.php?view=month
+  my_course_url: /my
+  create_group_url: /group/group.php?courseid=
+  new_group_event_url: '/calendar/event.php?action=new&course='
+  course_enrol: /enrol/users.php?id=
   # admin credentials
   admin_username: moodle
   admin_password: soXy3zX2JTRwZCXw!
