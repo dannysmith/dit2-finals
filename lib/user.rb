@@ -6,7 +6,7 @@
 
 class User
   attr_reader :username, :password, :firstname, :lastname, :email, :id
-  attr_accessor :metaname
+  attr_accessor :tag
 
   @@users = []
 
@@ -63,6 +63,8 @@ class User
     Utilities.login(@browser, @username, @password)
   end
 
+  # CLASS METHODS
+
   def self.all
     @@users
   end
@@ -78,31 +80,32 @@ class User
   end
 
   # Returns and array of User objects
-  def self.find_by_tag(tag)
+  def self.find_by_tag(browser, tag)
     results = []
-    @@courses.each do |course|
-      results << if course.tag == tag
+    @@users.each do |user|
+      results << user if (user.tag == tag)
     end
+    results
   end
 
-  def self.delete_by_tag!(tag)
-    courses = self.find_by_tag(tag)
+  def self.delete_by_tag!(browser, tag)
 
-    Utilities.login_as_admin @browser
-    @browser.goto EnvConfig.base_url + EnvConfig.modify_users_url
+    users = self.find_by_tag(browser, tag)
 
-    # Loop and select all relevant courses.
-    courses.each { |course| @browser.option(value: course.id).select }
+    Utilities.login_as_admin browser
+    browser.goto EnvConfig.base_url + EnvConfig.modify_users_url
 
-    @browser.input(value: "Add to selection").click
-    @browser.option(text: "Delete").select
-    @browser.input(value: "Go").click
-    @browser.input(value: "Yes").click
-    Utilities.logout @browser
+    # Loop and select all relevant users.
+    users.each { |user| browser.option(value: user.id).select }
 
-    # Delete the course object from @@courses
-    courses.each { |course| @@courses.delete(course) }
+    browser.input(value: "Add to selection").click
+    browser.option(text: "Delete").select
+    browser.input(value: "Go").click
+    browser.input(value: "Yes").click
+    Utilities.logout browser
 
+    # Delete the user object from @@users
+    users.each { |user| @@users.delete(user) }
   end
 
   private
