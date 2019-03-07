@@ -21,6 +21,9 @@ Before do
   end
 end
 
+binding.pry
+
+
 # Registering 4 users
 # Enrolling 2 users
 # 1 user shall create a course
@@ -185,7 +188,7 @@ end
 After ('@DITA6_teardown') do
   @app.login.visit
   @app.login.admin_login
-  @browser.goto EnvConfig.course_manage_url 
+  @browser.goto EnvConfig.course_manage_url
   @browser.as(class: 'coursename').each_with_index do |course, i|
     if course.text == 'ITA'
       @browser.imgs(alt: 'Delete')[i].click
@@ -201,14 +204,14 @@ After ('@DITA6_teardown') do
   @browser.option(text:'Delete').select
   @browser.button(id:'id_doaction').click
   @browser.button(value:'Yes').click
-  @browser.button(value:'Continue').click    
+  @browser.button(value:'Continue').click
 end
 
 After ('@course_teardown') do
   @app.login.visit
   @app.login.admin_login
 
-  @browser.goto EnvConfig.course_manage_url 
+  @browser.goto EnvConfig.course_manage_url
   @browser.as(class: 'coursename').each_with_index do |course, i|
     if course.text == 'Maths'
       @browser.imgs(alt: 'Delete')[i].click
@@ -226,7 +229,7 @@ After ('@course_teardown') do
   @browser.option(text:'Delete').select
   @browser.button(id:'id_doaction').click
   @browser.button(value:'Yes').click
-  @browser.button(value:'Continue').click    
+  @browser.button(value:'Continue').click
 end
 
 # NO LONGER USED FOR EVENTS FEATURE
@@ -260,7 +263,7 @@ end
 After ('@new_user_teardown') do
   @app.login.visit
   @app.login.admin_login
-  @browser.goto EnvConfig.modify_users_url 
+  @browser.goto EnvConfig.modify_users_url
   EnvConfig.data['Correct'].each_with_index do |_u, i|
     name = EnvConfig.data['Correct'][i]["firstname"]+" "+EnvConfig.data['Correct'][i]["lastname"]
     @browser.option(text:name).select
@@ -272,7 +275,7 @@ After ('@new_user_teardown') do
   @browser.button(value:'Continue').click
   @browser.goto EnvConfig.third_party_email_url
   EnvConfig.data['Correct'].each_with_index do |_u, i|
-    @browser.span(id:"inbox-id").click    
+    @browser.span(id:"inbox-id").click
     @browser.span(id:"inbox-id").text_field.set EnvConfig.data['Correct'][i]["email"][/([^@]+)/]
     @browser.button(class: "save button small").click
     sleep(2)
@@ -281,12 +284,12 @@ After ('@new_user_teardown') do
       @browser.button(id:"del_button").click
       sleep(1)
     end
-  end  
+  end
 end
 
 After('@event_calendar') do
   unless condition
-    
+
   end
 end
 
@@ -316,7 +319,7 @@ at_exit do
   # if $user_setup_hook
   #   @app.login.visit
   #   @app.login.admin_login
-  #   @browser.goto EnvConfig.modify_users_url 
+  #   @browser.goto EnvConfig.modify_users_url
   #   name = EnvConfig.data['Correct'][0]["firstname"]+" "+EnvConfig.data['Correct'][0]["lastname"]
   #   @browser.option(text:name).select
   #   @browser.button(id:'id_addsel').click
